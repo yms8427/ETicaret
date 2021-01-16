@@ -17,6 +17,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "client", "client", "{139181
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yms.Api", "src\api\Yms.Api\Yms.Api.csproj", "{BC6107CA-CB72-4143-8100-BF0630BAFD5F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yms.Web", "src\client\Yms.Web\Yms.Web.csproj", "{1870680E-3559-4867-A899-15130A80B8A4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{BC6107CA-CB72-4143-8100-BF0630BAFD5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC6107CA-CB72-4143-8100-BF0630BAFD5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BC6107CA-CB72-4143-8100-BF0630BAFD5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1870680E-3559-4867-A899-15130A80B8A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1870680E-3559-4867-A899-15130A80B8A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1870680E-3559-4867-A899-15130A80B8A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1870680E-3559-4867-A899-15130A80B8A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -36,6 +42,7 @@ Global
 		{8A6225F6-73E8-4FF5-AB1B-6B1B637AEEBF} = {62CAA19C-045C-4E32-A0E8-660CD5188597}
 		{139181F3-3499-4510-9EA3-A10ACFA22C16} = {62CAA19C-045C-4E32-A0E8-660CD5188597}
 		{BC6107CA-CB72-4143-8100-BF0630BAFD5F} = {F67DF479-584E-495E-A416-20554AF020EF}
+		{1870680E-3559-4867-A899-15130A80B8A4} = {139181F3-3499-4510-9EA3-A10ACFA22C16}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D8E871ED-10DD-4808-A76A-B8FD18406875}
