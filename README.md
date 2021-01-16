@@ -1,3 +1,3 @@
 # ETicaret
 
-BilgeAdam YMS8427 grubunun uçtan uca uygulama projesi
+BilgeAdam YMS-8427 grubunun uçtan uca uygulama projesi
