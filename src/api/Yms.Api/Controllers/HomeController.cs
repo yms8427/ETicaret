@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Yms.Api.Controllers //deneme yorumu
+namespace Yms.Api.Controllers //Deneme Yorumu
 {
     [ApiController]
     [Route("api/[controller]")]
