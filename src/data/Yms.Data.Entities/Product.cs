@@ -9,5 +9,6 @@ namespace Yms.Data.Entities
         public int Stock { get; set; }
         public int SupplierId { get; set; }
         public int SubCategoryId { get; set; }
+        public bool IsFeatured { get; set; }
     }
 }
