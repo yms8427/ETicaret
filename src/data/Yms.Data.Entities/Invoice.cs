@@ -28,6 +28,7 @@ namespace Yms.Data.Entities
         [ForeignKey(nameof(ClientId))]
         public virtual User User { get; set; }
 
-        // TODO: Client address client navigation property
+        [ForeignKey(nameof(ClientAddress))]
+        public virtual ClientAddress ClientAddress { get; set; }
     }
 }
