@@ -8,6 +8,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{0E35A2D4-8553-4D7E-8156-55648A045E7A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{63D97B1B-097C-4645-A573-101090628DB0}"
+	ProjectSection(SolutionItems) = preProject
+		docs\Migration.txt = docs\Migration.txt
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "api", "api", "{F67DF479-584E-495E-A416-20554AF020EF}"
 EndProject
@@ -33,7 +36,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yms.Data.Entity.Abstraction
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{0221B15B-E864-4F3A-8317-0939A30A27C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yms.Common.Contracts", "src\common\Yms.Common.Contracts\Yms.Common.Contracts.csproj", "{BA132CDC-3E96-44E1-8B85-EF0CCDACE895}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yms.Common.Contracts", "src\common\Yms.Common.Contracts\Yms.Common.Contracts.csproj", "{BA132CDC-3E96-44E1-8B85-EF0CCDACE895}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

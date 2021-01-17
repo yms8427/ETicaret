@@ -10,12 +10,13 @@ namespace Yms.Data.Entities
     {
         [Required]
         public Guid OrderId { get; set; }
+
         [Required]
         public Guid SupplierId { get; set; }
-        [Required]
-        public Guid ClientId { get; set; }
+
         [Required]
         public int InvoiceNumber { get; set; }
+
         [Required]
         public Guid ClientAddressId { get; set; }
 
@@ -24,9 +25,6 @@ namespace Yms.Data.Entities
 
         [ForeignKey(nameof(SupplierId))]
         public virtual Supplier Supplier { get; set; }
-
-        [ForeignKey(nameof(ClientId))]
-        public virtual User User { get; set; }
 
         [ForeignKey(nameof(ClientAddress))]
         public virtual ClientAddress ClientAddress { get; set; }

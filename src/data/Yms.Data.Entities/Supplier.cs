@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Yms.Data.Entity.Abstractions;
 
 namespace Yms.Data.Entities
 {
     [Table("Suppliers", Schema = "Production")]
-    public class Supplier
+    public class Supplier : EntityBase
     {
         [Required]
         [MaxLength(140)]

@@ -1,11 +1,12 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Yms.Data.Entity.Abstractions;
 
 namespace Yms.Data.Entities
 {
     [Table("SubCategories", Schema = "Production")]
-    public class SubCategory
+    public class SubCategory : EntityBase
     {
         [Required]
         [MaxLength(30)]
