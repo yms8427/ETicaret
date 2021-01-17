@@ -1,0 +1,2 @@
+Add-Migration [----MigrationAdı----] -P Yms.Data.Context -C YmsDbContext -S Yms.Api
+Update-Database -P Yms.Data.Context -C YmsDbContext -S Yms.Api [-Verbose]

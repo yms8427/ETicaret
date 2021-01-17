@@ -6,7 +6,7 @@ using Yms.Data.Entity.Abstractions;
 
 namespace Yms.Data.Entities
 {
-    [Table("Baskets", Schema = "Order")]
+    [Table("OrderTracks", Schema = "Order")]
     public class OrderTrack : EntityBase
     {
         [Required]
