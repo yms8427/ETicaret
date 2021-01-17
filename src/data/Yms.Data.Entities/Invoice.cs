@@ -26,7 +26,7 @@ namespace Yms.Data.Entities
         [ForeignKey(nameof(SupplierId))]
         public virtual Supplier Supplier { get; set; }
 
-        [ForeignKey(nameof(ClientAddress))]
+        [ForeignKey(nameof(ClientAddressId))]
         public virtual ClientAddress ClientAddress { get; set; }
     }
 }

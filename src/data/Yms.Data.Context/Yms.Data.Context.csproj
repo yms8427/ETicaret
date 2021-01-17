@@ -17,8 +17,4 @@
     <ProjectReference Include="..\Yms.Data.Entities\Yms.Data.Entities.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Migrations\" />
-  </ItemGroup>
-
 </Project>
