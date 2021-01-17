@@ -17,6 +17,12 @@ namespace Yms.Data.Entities
         [MaxLength(64)]
         public string Password { get; set; }
         [Required]
+        [MaxLength(64)]
+        public string MailAddress { get; set; }
+        [Required]
+        [MaxLength(20)]
+        public string Phone { get; set; }
+        [Required]
         public UserType Type { get; set; }
         [MaxLength(40)]
         public string VerificationCode { get; set; }
