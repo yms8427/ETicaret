@@ -1,14 +1,26 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Yms.Data.Entity.Abstractions;
 
 namespace Yms.Data.Entities
 {
-    public class Product
+    [Table("Products", Schema = "Production")]
+    public class Product : EntityBase
     {
+        [Required]
+        [MaxLength(60)]
         public string Name { get; set; }
+        [Required]
         public decimal Price { get; set; }
+        [Required]
         public int Stock { get; set; }
-        public int SupplierId { get; set; }
-        public int SubCategoryId { get; set; }
-        public bool IsFeatured { get; set; }
+        [MaxLength(255)]
+        public string MainImageUrl { get; set; }
+        public Guid SupplierId { get; set; }
+        public Guid SubCategoryId { get; set; }
+
+        public Supplier Supplier { get; set; }
+        public SubCategory SubCategory { get; set; }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Yms.Data.Context
 {
-    public class Class1
+    public class YmsDbContext
     {
     }
 }

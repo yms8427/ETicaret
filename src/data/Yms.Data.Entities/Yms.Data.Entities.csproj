@@ -4,4 +4,9 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\common\Yms.Common.Contracts\Yms.Common.Contracts.csproj" />
+    <ProjectReference Include="..\Yms.Data.Entity.Abstractions\Yms.Data.Entity.Abstractions.csproj" />
+  </ItemGroup>
+
 </Project>
