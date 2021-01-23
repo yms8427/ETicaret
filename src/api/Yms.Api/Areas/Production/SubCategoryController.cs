@@ -13,39 +13,39 @@ namespace Yms.Api.Areas.Production
     [Route("api/[area]/[controller]")]
     [Area("Production")]
     [ApiController]
-    public class CategoryController : ControllerBase
+    public class SubCategoryController : ControllerBase
     {
-        private readonly ICategoryService service;
+        private readonly ISubCategoryService service;
 
-        public CategoryController(ICategoryService service)
+        public SubCategoryController(ISubCategoryService service)
         {
             this.service = service;
         }
 
         [HttpPost("add-new")]
-        public Guid AddCategory(NewCategoryDto data)
+        public Guid AddSubCategory(NewSubCategoryDto data)
         {
-            return service.AddNewCategory(data);
+            return service.AddNewSubCategory(data);
         }
 
 
         [HttpGet("list")]
-        public IEnumerable<CategoryDto> ListCategories()
+        public IEnumerable<SubCategoryDto> ListSubCategories()
         {
-            return service.GetCategories();
+            return service.GetSubCategories();
         }
 
         [HttpGet("category-detail")]
-        public CategoryDto GetCategory([FromQuery] Guid id)
+        public SubCategoryDto GetSubCategory([FromQuery] Guid id)
         {
-            var category = service.GetCategory(id);
-            if (category != null)
+            var subCategory = service.GetSubCategory(id);
+            if (subCategory != null)
             {
-                return category;
+                return subCategory;
             }
             else
             {
-                throw new InvalidOperationException("category not found");
+                throw new InvalidOperationException("SubCategory not found");
             }
         }
     }
