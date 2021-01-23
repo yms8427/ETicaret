@@ -28,6 +28,7 @@ namespace Yms.Api
         {
             services.AddDataContext(Configuration.GetSection("Settings:Database:Default").Value);
             services.AddControllers();
+            services.AddSwaggerGen();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -36,6 +37,12 @@ namespace Yms.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "YMS API");
+            });
 
             //Proje çalışmadan önce otomatik olarak migrate edilecek
             //using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
@@ -49,6 +56,7 @@ namespace Yms.Api
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute(name: "Area", pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapControllers();
             });
         }

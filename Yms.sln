@@ -38,6 +38,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{0221B1
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yms.Common.Contracts", "src\common\Yms.Common.Contracts\Yms.Common.Contracts.csproj", "{BA132CDC-3E96-44E1-8B85-EF0CCDACE895}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "contracts", "contracts", "{EC8F6893-DD2D-49B5-A3EF-A5F082986D86}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yms.Contracts.Production", "src\services\contracts\Yms.Contracts.Production\Yms.Contracts.Production.csproj", "{A4F64B25-491D-420E-B3A9-EFE5074FACDC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -76,6 +80,10 @@ Global
 		{BA132CDC-3E96-44E1-8B85-EF0CCDACE895}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA132CDC-3E96-44E1-8B85-EF0CCDACE895}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA132CDC-3E96-44E1-8B85-EF0CCDACE895}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4F64B25-491D-420E-B3A9-EFE5074FACDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4F64B25-491D-420E-B3A9-EFE5074FACDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4F64B25-491D-420E-B3A9-EFE5074FACDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4F64B25-491D-420E-B3A9-EFE5074FACDC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -94,6 +102,8 @@ Global
 		{E7F65434-17AF-4A3C-B23B-146321E52442} = {8A6225F6-73E8-4FF5-AB1B-6B1B637AEEBF}
 		{0221B15B-E864-4F3A-8317-0939A30A27C3} = {62CAA19C-045C-4E32-A0E8-660CD5188597}
 		{BA132CDC-3E96-44E1-8B85-EF0CCDACE895} = {0221B15B-E864-4F3A-8317-0939A30A27C3}
+		{EC8F6893-DD2D-49B5-A3EF-A5F082986D86} = {1FDC20D8-70CD-4649-9A49-4C5A55D8340A}
+		{A4F64B25-491D-420E-B3A9-EFE5074FACDC} = {EC8F6893-DD2D-49B5-A3EF-A5F082986D86}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D8E871ED-10DD-4808-A76A-B8FD18406875}
