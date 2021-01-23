@@ -9,6 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{0E35A2D4-8
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{63D97B1B-097C-4645-A573-101090628DB0}"
 	ProjectSection(SolutionItems) = preProject
+		docs\InitialData-1.sql = docs\InitialData-1.sql
 		docs\Migration.txt = docs\Migration.txt
 	EndProjectSection
 EndProject
