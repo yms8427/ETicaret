@@ -8,5 +8,6 @@ namespace Yms.Contracts.Production
         public decimal Price { get; set; }
         public int Stock { get; set; }
         public Guid SubCategoryId { get; set; }
+        public Guid SupplierId { get; set; }
     }
 }
