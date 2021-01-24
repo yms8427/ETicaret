@@ -28,25 +28,16 @@ namespace Yms.Api.Areas.Production
             return service.AddNewSubCategory(data);
         }
 
-
-        [HttpGet("list")]
-        public IEnumerable<SubCategoryDto> ListSubCategories()
+        [HttpGet("list/{categoryId}")]
+        public IEnumerable<SubCategoryDto> ListSubCategories(Guid categoryId)
         {
-            return service.GetSubCategories();
+            return service.GetSubCategories(categoryId);
         }
 
         [HttpGet("category-detail")]
         public SubCategoryDto GetSubCategory([FromQuery] Guid id)
         {
-            var subCategory = service.GetSubCategory(id);
-            if (subCategory != null)
-            {
-                return subCategory;
-            }
-            else
-            {
-                throw new InvalidOperationException("SubCategory not found");
-            }
+            return  service.GetSubCategory(id);
         }
     }
 }

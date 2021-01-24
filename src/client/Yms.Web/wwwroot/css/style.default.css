@@ -3439,3 +3439,7 @@ code {
 .breadcrumb-item.active {
   color: #aaa;
 }
+
+a.main-category {
+    color: #000;
+}

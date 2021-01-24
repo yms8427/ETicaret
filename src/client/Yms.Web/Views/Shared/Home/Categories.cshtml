@@ -1,0 +1,21 @@
+﻿@model IEnumerable<Yms.Web.Models.HomePageCategoryViewModel>
+<h5 class="text-uppercase mb-4">Kategoriler</h5>
+@foreach (var category in Model)
+{
+    <div class="py-2 px-4 text-white">
+        <a class="main-category" asp-controller="Product" asp-action="Category" asp-route-id="@category.Id">
+            <strong class="small text-uppercase font-weight-bold">@category.Name</strong>
+        </a>
+    </div>
+    if (category.SubItems.Count > 0)
+    {
+        <ul class="list-unstyled small text-muted pl-lg-4 font-weight-normal">
+            @foreach (var subCategory in category.SubItems)
+            {
+                <li class="mb-2">
+                    <a class="reset-anchor" asp-controller="Product" asp-action="SubCategory" asp-route-id="@subCategory.Id">@subCategory.Name</a>
+                </li>
+            }
+        </ul>
+    }
+}

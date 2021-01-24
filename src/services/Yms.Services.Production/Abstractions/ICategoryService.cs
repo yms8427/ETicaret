@@ -9,5 +9,6 @@ namespace Yms.Services.Production.Abstractions
         Guid AddNewCategory(NewCategoryDto data);
         IEnumerable<CategoryDto> GetCategories();
         CategoryDto GetCategory(Guid categoryId);
+        CategoryHierarchyDto GetCategoryHierarchy();
     }
 }

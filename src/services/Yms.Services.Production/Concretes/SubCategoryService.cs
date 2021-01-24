@@ -19,6 +19,11 @@ namespace Yms.Services.Production.Concretes
         }
         public Guid AddNewSubCategory(NewSubCategoryDto data)
         {
+            var hasCategory = context.Categories.Any(f => f.Id == data.CategoryId);
+            if (!hasCategory)
+            {
+                throw new InvalidOperationException("Category not found");
+            }
             var sc = new SubCategory
             {
                 Id = Guid.NewGuid(),
@@ -42,13 +47,11 @@ namespace Yms.Services.Production.Concretes
             return Guid.Empty;
         }
 
-        public IEnumerable<SubCategoryDto> GetSubCategories()
+        public IEnumerable<SubCategoryDto> GetSubCategories(Guid categoryId)
         {
-            return context.SubCategories.Include(s => s.Category).Select(sc => new SubCategoryDto
+            return context.SubCategories.Where(f => f.CategoryId == categoryId).Select(sc => new SubCategoryDto
             {
                 Id = sc.Id,
-                CategoryId = sc.CategoryId,
-                CategoryName = sc.Category.Name,
                 Name = sc.Name,
                 ImgUrl = sc.ImageUrl
 
@@ -57,14 +60,21 @@ namespace Yms.Services.Production.Concretes
 
         public SubCategoryDto GetSubCategory(Guid subCategoryId)
         {
-            return context.SubCategories.Include(i => i.Category).Where(sc => sc.Id == subCategoryId).Select(s => new SubCategoryDto
+            var subCategory = context.SubCategories.Where(sc => sc.Id == subCategoryId)
+                                                   .Select(s => new SubCategoryDto
+                                                   {
+                                                       Id = s.Id,
+                                                       ImgUrl = s.ImageUrl,
+                                                       Name = s.Name,
+                                                   }).FirstOrDefault();
+            if (subCategory != null)
             {
-                Id = s.Id,
-                CategoryId = s.CategoryId,
-                ImgUrl = s.ImageUrl,
-                Name = s.Name,
-                CategoryName = s.Category.Name
-            }).FirstOrDefault();
+                return subCategory;
+            }
+            else
+            {
+                throw new InvalidOperationException("SubCategory not found");
+            }
         }
     }
 }

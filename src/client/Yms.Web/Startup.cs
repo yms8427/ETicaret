@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Yms.Web.HttpHandlers;
 
 namespace Yms.Web
 {
@@ -22,6 +24,11 @@ namespace Yms.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpClient<IYmsApiHttpHandler, YmsApiHttpHandler>(c =>
+            {
+                c.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                c.BaseAddress = new Uri(Configuration.GetValue<string>("ApiUrl"));
+            });
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
         }
 

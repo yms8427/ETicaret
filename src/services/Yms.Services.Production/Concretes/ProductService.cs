@@ -66,13 +66,14 @@ namespace Yms.Services.Production.Concretes
 
         public IEnumerable<ProductDto> GetProducts(int count)
         {
-            return products.Include(i => i.SubCategory).Where(p => p.IsActive).Take(count).Select(s => new ProductDto
+            return products.Include(i => i.SubCategory).Include(i => i.Document).Where(p => p.IsActive).Take(count).Select(s => new ProductDto
             {
                 Id = s.Id,
                 Name = s.Name,
                 Price = s.Price,
                 Stock = s.Stock,
-                Category = s.SubCategory.Name
+                Category = s.SubCategory.Name,
+                ImageUrl = s.Document.PhysicalAddress
             }).ToList();
         }
 

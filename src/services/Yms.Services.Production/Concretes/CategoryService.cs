@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Yms.Contracts.Production;
 using Yms.Data.Context;
 using Yms.Data.Entities;
 using Yms.Services.Production.Abstractions;
+using Yms.Services.Production.Helpers;
 
 namespace Yms.Services.Production.Concretes
 {
@@ -55,12 +57,37 @@ namespace Yms.Services.Production.Concretes
 
         public CategoryDto GetCategory(Guid categoryId)
         {
-            return context.Categories.Where(c => c.Id == categoryId).Select(c => new CategoryDto
+            var category = context.Categories.Where(c => c.Id == categoryId)
+                                             .Select(c => new CategoryDto
+                                             {
+                                                 Id = c.Id,
+                                                 Description = c.Description,
+                                                 Name = c.Name
+                                             }).FirstOrDefault();
+            if (category != null)
             {
-                Id = c.Id,
-                Description = c.Description,
-                Name = c.Name
-            }).FirstOrDefault();
+                return category;
+            }
+            else
+            {
+                throw new InvalidOperationException("category not found");
+            }
+        }
+
+        public CategoryHierarchyDto GetCategoryHierarchy()
+        {
+            var rawData = context.SubCategories.Where(i => !i.IsDeleted)
+                                               .Include(i => i.Category)
+                                               .Select(s => new DetailedSubCategoryDto
+                                               {
+                                                   CategoryId = s.CategoryId,
+                                                   CategoryName = s.Category.Name,
+                                                   Description = s.Category.Description,
+                                                   SubCategoryId = s.Id,
+                                                   SubCategoryName = s.Name
+                                               })
+                                               .ToList();
+            return CategoryComposer.Compose(rawData);
         }
     }
 }
