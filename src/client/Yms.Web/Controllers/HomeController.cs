@@ -20,7 +20,10 @@ namespace Yms.Web.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var vm = new MainViewModel();
+            vm.Products = null;
+            vm.Categories = null;
+            return View(vm);
         }
 
         public IActionResult Privacy()

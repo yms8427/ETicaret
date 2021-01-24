@@ -39,5 +39,11 @@ namespace Yms.Api.Areas.Production
         {
             return service.GetCategory(id);
         }
+
+        [HttpGet("get-tree")]
+        public CategoryHierarchyDto GetCategoryHierarchy()
+        {
+            return service.GetCategoryHierarchy();
+        }
     }
 }
