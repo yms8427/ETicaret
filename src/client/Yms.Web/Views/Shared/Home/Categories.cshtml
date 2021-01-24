@@ -12,7 +12,9 @@
         <ul class="list-unstyled small text-muted pl-lg-4 font-weight-normal">
             @foreach (var subCategory in category.SubItems)
             {
-                <li class="mb-2"><a class="reset-anchor" asp-controller="Product" asp-action="SubCategory" asp-route-id="@subCategory.Id">@subCategory.Name</a></li>
+                <li class="mb-2">
+                    <a class="reset-anchor" asp-controller="Product" asp-action="SubCategory" asp-route-id="@subCategory.Id">@subCategory.Name</a>
+                </li>
             }
         </ul>
     }

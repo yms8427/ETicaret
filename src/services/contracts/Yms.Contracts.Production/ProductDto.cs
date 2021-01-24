@@ -9,5 +9,6 @@ namespace Yms.Contracts.Production
         public int Stock { get; set; }
         public string Category { get; set; }
         public Guid Id { get; set; }
+        public string ImageUrl { get; set; }
     }
 }

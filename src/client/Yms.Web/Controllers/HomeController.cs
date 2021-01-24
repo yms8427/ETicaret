@@ -22,9 +22,10 @@ namespace Yms.Web.Controllers
         public async Task<IActionResult> Index()
         {
             var tree = await httpHandler.GetCategoryTree();
+            var products = await httpHandler.GetProducts(10);//TODO : bunu kullan
             var vm = new MainViewModel
             {
-                Products = null,
+                Products = HomePageProductViewModel.GetDummyProducts().ToList(),
                 Categories = HomePageCategoryViewModel.FromHierachicalTemplate(tree).ToList()
             };
             return View(vm);

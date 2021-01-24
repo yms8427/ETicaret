@@ -15,12 +15,12 @@ namespace Yms.Data.Entities
         public decimal Price { get; set; }
         [Required]
         public int Stock { get; set; }
-        [MaxLength(255)]
-        public string MainImageUrl { get; set; }
+        public Guid? DocumentId { get; set; }
         public Guid SupplierId { get; set; }
         public Guid SubCategoryId { get; set; }
 
         public Supplier Supplier { get; set; }
         public SubCategory SubCategory { get; set; }
+        public Document Document { get; set; }
     }
 }

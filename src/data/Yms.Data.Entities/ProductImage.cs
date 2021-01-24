@@ -9,12 +9,13 @@ namespace Yms.Data.Entities
     public class ProductImage : EntityBase
     {
         [Required]
-        [MaxLength(255)]
-        public string ImageUrl { get; set; }
+        public Guid DocumentId { get; set; }
         [Required]
         public Guid ProductId { get; set; }
 
         [ForeignKey(nameof(ProductId))]
         public virtual Product Product { get; set; }
+        [ForeignKey(nameof(DocumentId))]
+        public virtual Document Document { get; set; }
     }
 }
