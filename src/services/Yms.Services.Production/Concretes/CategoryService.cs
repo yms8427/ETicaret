@@ -55,12 +55,21 @@ namespace Yms.Services.Production.Concretes
 
         public CategoryDto GetCategory(Guid categoryId)
         {
-            return context.Categories.Where(c => c.Id == categoryId).Select(c => new CategoryDto
+            var category = context.Categories.Where(c => c.Id == categoryId)
+                                             .Select(c => new CategoryDto
+                                             {
+                                                 Id = c.Id,
+                                                 Description = c.Description,
+                                                 Name = c.Name
+                                             }).FirstOrDefault();
+            if (category != null)
             {
-                Id = c.Id,
-                Description = c.Description,
-                Name = c.Name
-            }).FirstOrDefault();
+                return category;
+            }
+            else
+            {
+                throw new InvalidOperationException("category not found");
+            }
         }
     }
 }

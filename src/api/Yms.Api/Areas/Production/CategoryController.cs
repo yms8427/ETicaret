@@ -28,7 +28,6 @@ namespace Yms.Api.Areas.Production
             return service.AddNewCategory(data);
         }
 
-
         [HttpGet("list")]
         public IEnumerable<CategoryDto> ListCategories()
         {
@@ -38,15 +37,7 @@ namespace Yms.Api.Areas.Production
         [HttpGet("category-detail")]
         public CategoryDto GetCategory([FromQuery] Guid id)
         {
-            var category = service.GetCategory(id);
-            if (category != null)
-            {
-                return category;
-            }
-            else
-            {
-                throw new InvalidOperationException("category not found");
-            }
+            return service.GetCategory(id);
         }
     }
 }

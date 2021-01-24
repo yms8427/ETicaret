@@ -7,7 +7,7 @@ namespace Yms.Services.Production.Abstractions
     public interface ISubCategoryService
     {
         Guid AddNewSubCategory(NewSubCategoryDto data);
-        IEnumerable<SubCategoryDto> GetSubCategories();
+        IEnumerable<SubCategoryDto> GetSubCategories(Guid categoryId);
         SubCategoryDto GetSubCategory(Guid subCategoryId);
     }
 }
