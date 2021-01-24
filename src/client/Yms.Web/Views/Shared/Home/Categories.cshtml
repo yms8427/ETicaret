@@ -1,28 +1,19 @@
-﻿<h5 class="text-uppercase mb-4">Kategoriler</h5>
-<div class="py-2 px-4 text-white"><a class="main-category" href="#"><strong class="small text-uppercase font-weight-bold">Fashion &amp; Acc</strong></a></div>
-<ul class="list-unstyled small text-muted pl-lg-4 font-weight-normal">
-    <li class="mb-2"><a class="reset-anchor" href="#">Women's T-Shirts</a></li>
-    <li class="mb-2"><a class="reset-anchor" href="#">Men's T-Shirts</a></li>
-    <li class="mb-2"><a class="reset-anchor" href="#">Dresses</a></li>
-    <li class="mb-2"><a class="reset-anchor" href="#">Novelty socks</a></li>
-    <li class="mb-2"><a class="reset-anchor" href="#">Women's sunglasses</a></li>
-    <li class="mb-2"><a class="reset-anchor" href="#">Men's sunglasses</a></li>
-</ul>
-<div class="py-2 px-4 bg-light"><a class="main-category" href="#"><strong class="small text-uppercase font-weight-bold">Health &amp; Beauty</strong></a></div>
-<ul class="list-unstyled small text-muted pl-lg-4 font-weight-normal">
-    <li class="mb-2"><a class="reset-anchor" href="#">Shavers</a></li>
-    <li class="mb-2"><a class="reset-anchor" href="#">bags</a></li>
-    <li class="mb-2"><a class="reset-anchor" href="#">Cosmetic</a></li>
-    <li class="mb-2"><a class="reset-anchor" href="#">Nail Art</a></li>
-    <li class="mb-2"><a class="reset-anchor" href="#">Skin Masks &amp; Peels</a></li>
-    <li class="mb-2"><a class="reset-anchor" href="#">Korean cosmetics</a></li>
-</ul>
-<div class="py-2 px-4 bg-light"><a class="main-category" href="#"><strong class="small text-uppercase font-weight-bold">Electronics</strong></a></div>
-<ul class="list-unstyled small text-muted pl-lg-4 font-weight-normal mb-5">
-    <li class="mb-2"><a class="reset-anchor" href="#">Electronics</a></li>
-    <li class="mb-2"><a class="reset-anchor" href="#">USB Flash drives</a></li>
-    <li class="mb-2"><a class="reset-anchor" href="#">Headphones</a></li>
-    <li class="mb-2"><a class="reset-anchor" href="#">Portable speakers</a></li>
-    <li class="mb-2"><a class="reset-anchor" href="#">Cell Phone bluetooth headsets</a></li>
-    <li class="mb-2"><a class="reset-anchor" href="#">Keyboards</a></li>
-</ul>
+﻿@model IEnumerable<Yms.Web.Models.HomePageCategoryViewModel>
+<h5 class="text-uppercase mb-4">Kategoriler</h5>
+@foreach (var category in Model)
+{
+    <div class="py-2 px-4 text-white">
+        <a class="main-category" asp-controller="Product" asp-action="Category" asp-route-id="@category.Id">
+            <strong class="small text-uppercase font-weight-bold">@category.Name</strong>
+        </a>
+    </div>
+    if (category.SubItems.Count > 0)
+    {
+        <ul class="list-unstyled small text-muted pl-lg-4 font-weight-normal">
+            @foreach (var subCategory in category.SubItems)
+            {
+                <li class="mb-2"><a class="reset-anchor" asp-controller="Product" asp-action="SubCategory" asp-route-id="@subCategory.Id">@subCategory.Name</a></li>
+            }
+        </ul>
+    }
+}

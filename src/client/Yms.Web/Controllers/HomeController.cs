@@ -5,24 +5,28 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Yms.Web.HttpHandlers;
 using Yms.Web.Models;
 
 namespace Yms.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IYmsApiHttpHandler httpHandler;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IYmsApiHttpHandler httpHandler)
         {
-            _logger = logger;
+            this.httpHandler = httpHandler;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var vm = new MainViewModel();
-            vm.Products = null;
-            vm.Categories = null;
+            var tree = await httpHandler.GetCategoryTree();
+            var vm = new MainViewModel
+            {
+                Products = null,
+                Categories = HomePageCategoryViewModel.FromHierachicalTemplate(tree).ToList()
+            };
             return View(vm);
         }
 

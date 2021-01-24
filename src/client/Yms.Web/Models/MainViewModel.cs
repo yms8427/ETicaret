@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Yms.Contracts.Production;
 
 namespace Yms.Web.Models
 {
@@ -29,6 +30,28 @@ namespace Yms.Web.Models
         {
             public Guid Id { get; set; }
             public string Name { get; set; }
+        }
+
+        public static IEnumerable<HomePageCategoryViewModel> FromHierachicalTemplate(CategoryHierarchyDto data)
+        {
+            foreach (var category in data.Items)
+            {
+                var vm = new HomePageCategoryViewModel
+                {
+                    Id = category.Id,
+                    Name = category.Text,
+                    Description = category.Attributes["Description"]
+                };
+                if (category.Items.Any())
+                {
+                    vm.SubItems = category.Items.Select(s => new SubCategoryViewModel
+                    {
+                        Id = s.Id,
+                        Name = s.Text
+                    }).ToList();
+                }
+                yield return vm;
+            }
         }
     }
 }

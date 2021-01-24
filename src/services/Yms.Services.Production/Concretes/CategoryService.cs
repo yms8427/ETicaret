@@ -87,8 +87,7 @@ namespace Yms.Services.Production.Concretes
                                                    SubCategoryName = s.Name
                                                })
                                                .ToList();
-            var data = CategoryComposer.Compose(rawData);
-            return data;
+            return CategoryComposer.Compose(rawData);
         }
     }
 }
