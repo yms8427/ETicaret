@@ -12,6 +12,8 @@ namespace Yms.Web.HttpHandlers
     {
         Task<CategoryHierarchyDto> GetCategoryTree();
         Task<List<ProductDto>> GetProducts(int limit);
+        Task<List<SupplierDto>> GetSuppliers();
+
     }
 
     public class YmsApiHttpHandler : IYmsApiHttpHandler
@@ -38,5 +40,14 @@ namespace Yms.Web.HttpHandlers
             var json = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<List<ProductDto>>(json);
         }
+        public async Task<List<SupplierDto>> GetSuppliers()
+        {
+            var response = await httpClient.GetAsync("api/production/supplier/list");
+            response.EnsureSuccessStatusCode();
+            var json = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<List<SupplierDto>>(json);
+        }
+
+      
     }
 }
