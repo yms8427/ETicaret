@@ -84,7 +84,7 @@ namespace Yms.Services.Production.Concretes
 
         public IEnumerable<ProductDto> GetProductsByCategory(int count, Guid id)
         {
-            return products.Include(p => p.SubCategory).Where(p => p.SubCategory.CategoryId == id).Take(count).Select(s => new ProductDto
+            return products.Include(p => p.SubCategory).Include(i => i.Document).Where(p => p.SubCategory.CategoryId == id).Take(count).Select(s => new ProductDto
             {
                 Id = s.Id,
                 Name = s.Name,
@@ -96,7 +96,7 @@ namespace Yms.Services.Production.Concretes
         }
         public IEnumerable<ProductDto> GetProductsBySubCategory(int count, Guid id)
         {
-            return products.Where(p => p.SubCategoryId == id).Take(count).Select(s => new ProductDto
+            return products.Include(i => i.Document).Where(p => p.SubCategoryId == id).Take(count).Select(s => new ProductDto
             {
                 Id = s.Id,
                 Name = s.Name,
@@ -110,7 +110,7 @@ namespace Yms.Services.Production.Concretes
 
         public IEnumerable<ProductDto> GetProductsBySupplier(int count, Guid id)
         {
-            return products.Where(p => p.SupplierId == id).Take(count).Select(s => new ProductDto
+            return products.Include(i => i.Document).Where(p => p.SupplierId == id).Take(count).Select(s => new ProductDto
             {
                 Id = s.Id,
                 Name = s.Name,
