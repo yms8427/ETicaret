@@ -81,5 +81,45 @@ namespace Yms.Services.Production.Concretes
         {
             throw new NotImplementedException();
         }
+
+        public IEnumerable<ProductDto> GetProductsByCategory(int count, Guid id)
+        {
+            return products.Include(p => p.SubCategory).Where(p => p.SubCategory.CategoryId == id).Take(count).Select(s => new ProductDto
+            {
+                Id = s.Id,
+                Name = s.Name,
+                Price = s.Price,
+                Stock = s.Stock,
+                Category = s.SubCategory.Name,
+                ImageUrl = s.Document.PhysicalAddress
+            }).ToList();
+        }
+        public IEnumerable<ProductDto> GetProductsBySubCategory(int count, Guid id)
+        {
+            return products.Where(p => p.SubCategoryId == id).Take(count).Select(s => new ProductDto
+            {
+                Id = s.Id,
+                Name = s.Name,
+                Price = s.Price,
+                Stock = s.Stock,
+                Category = s.SubCategory.Name,
+                ImageUrl = s.Document.PhysicalAddress,
+                
+            }).ToList();
+        }
+
+        public IEnumerable<ProductDto> GetProductsBySupplier(int count, Guid id)
+        {
+            return products.Where(p => p.SupplierId == id).Take(count).Select(s => new ProductDto
+            {
+                Id = s.Id,
+                Name = s.Name,
+                Price = s.Price,
+                Stock = s.Stock,
+                Category = s.SubCategory.Name,
+                ImageUrl = s.Document.PhysicalAddress,
+
+            }).ToList();
+        }
     }
 }

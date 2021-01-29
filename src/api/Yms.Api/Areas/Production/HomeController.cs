@@ -29,10 +29,33 @@ namespace Yms.Api.Areas.Production
             return service.GetProducts(count);
         }
 
+        [HttpGet("list-by-category")]
+        public IEnumerable<ProductDto> GetProductByCategory([FromQuery] int count, [FromQuery] Guid id)
+        {
+            return service.GetProductsByCategory(count, id);
+        }
+
+        [HttpGet("list-by-subcategory")]
+        public IEnumerable<ProductDto> GetProductBySubCategory([FromQuery] int count, [FromQuery] Guid id)
+        {
+            return service.GetProductsBySubCategory(count, id);
+        }
+
+        [HttpGet("list-by-supplier")]
+        public IEnumerable<ProductDto> GetProductBySupplier([FromQuery] int count, [FromQuery] Guid id)
+        {
+            return service.GetProductsBySupplier(count, id);
+        }
+
+
         [HttpGet("product-detail")]
         public ProductDto GetProduct([FromQuery] Guid id)
         {
             return service.GetProduct(id);
         }
+
+        
+
+
     }
 }

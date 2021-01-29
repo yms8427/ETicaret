@@ -9,6 +9,7 @@ namespace Yms.Web.Models
     public class MainViewModel
     {
         public List<HomePageProductViewModel> Products { get; set; }
+        
         public List<HomePageCategoryViewModel> Categories { get; set; }
         public List<HomePageSupplierViewModel> Suppliers { get; set; }
     }
@@ -62,6 +63,7 @@ namespace Yms.Web.Models
             });
         }
     }
+    
 
     public class HomePageCategoryViewModel
     {
