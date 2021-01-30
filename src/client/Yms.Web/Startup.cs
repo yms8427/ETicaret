@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Yms.Web.HttpHandlers;
+using Yms.Web.Middlewares;
 
 namespace Yms.Web
 {
@@ -27,6 +28,7 @@ namespace Yms.Web
             services.AddHttpClient<IYmsApiHttpHandler, YmsApiHttpHandler>(c =>
             {
                 c.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                c.DefaultRequestHeaders.Add("X-Client-Type", "YMS-MVC-Client");
                 c.BaseAddress = new Uri(Configuration.GetValue<string>("ApiUrl"));
             });
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
@@ -45,11 +47,8 @@ namespace Yms.Web
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            //app.UseMiddleware<ImageRewriteUrlMiddleware>();
             app.UseRouting();
-
-            app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

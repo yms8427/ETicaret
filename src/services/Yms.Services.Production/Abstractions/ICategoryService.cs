@@ -10,5 +10,7 @@ namespace Yms.Services.Production.Abstractions
         IEnumerable<CategoryDto> GetCategories();
         CategoryDto GetCategory(Guid categoryId);
         CategoryHierarchyDto GetCategoryHierarchy();
+        string GetCategoryNameById(Guid id);
+        string GetSubCategoryNameById(Guid id);
     }
 }

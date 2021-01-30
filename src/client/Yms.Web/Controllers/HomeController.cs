@@ -28,8 +28,8 @@ namespace Yms.Web.Controllers
             {
                 Products = HomePageProductViewModel.GetDummyProducts().ToList(),
                 Categories = HomePageCategoryViewModel.FromHierachicalTemplate(tree).ToList(),
-                Suppliers = HomePageSupplierViewModel.GetFromDto(suppliers).ToList()
-                
+                Suppliers = HomePageSupplierViewModel.GetFromDto(suppliers).ToList(),
+                Title = "ANA SAYFA"
             };
             return View(vm);
         }

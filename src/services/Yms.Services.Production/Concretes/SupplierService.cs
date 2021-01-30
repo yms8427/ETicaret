@@ -15,6 +15,12 @@ namespace Yms.Services.Production.Concretes
         {
             this.context = context;
         }
+
+        public string GetSupplierNameById(Guid id)
+        {
+            return context.Suppliers.FirstOrDefault(f => f.Id == id)?.Name;
+        }
+
         public IEnumerable<SupplierDto> GetSuppliers()
         {
             return context.Suppliers.Select(s => new SupplierDto

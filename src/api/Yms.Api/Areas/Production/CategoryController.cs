@@ -45,5 +45,17 @@ namespace Yms.Api.Areas.Production
         {
             return service.GetCategoryHierarchy();
         }
+
+        [HttpGet("category/{categoryId}")]
+        public string GetCategoryById(Guid categoryId)
+        {
+            return service.GetCategoryNameById(categoryId);
+        }
+
+        [HttpGet("sub-category/{categoryId}")]
+        public string GetSubCategoryById(Guid categoryId)
+        {
+            return service.GetSubCategoryNameById(categoryId);
+        }
     }
 }

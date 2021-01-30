@@ -1,9 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Yms.Contracts.Production;
 using Yms.Services.Production.Abstractions;
 
@@ -20,16 +17,17 @@ namespace Yms.Api.Areas.Production
         {
             this.service = service;
         }
-        //[HttpPost("add-new")]
-        //public Guid AddPoduct(NewProductDto data)
-        //{
-        //    return service.AddNewProduct(data);
-        //}
+
+        [HttpGet("supplier/{supplierId}")]
+        public string GetCategoryById(Guid supplierId)
+        {
+            return service.GetSupplierNameById(supplierId);
+        }
+
         [HttpGet("list")]
         public IEnumerable<SupplierDto> ListSuppliers()
         {
             return service.GetSuppliers();
         }
-
     }
 }

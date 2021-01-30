@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Yms.Api.Middlewares;
 using Yms.Data.Context.Extensions;
 using Yms.Services.OrderManagement.Extensions;
 using Yms.Services.Production.Extensions;
@@ -45,7 +46,8 @@ namespace Yms.Api
             //    var context = serviceScope.ServiceProvider.GetRequiredService<DbContext>();
             //    context.Database.Migrate();
             //}
-
+            app.UseMiddleware<CheckHeaderMiddleware>();
+            //app.UseMiddleware<LogRequestMiddleware>();
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();
