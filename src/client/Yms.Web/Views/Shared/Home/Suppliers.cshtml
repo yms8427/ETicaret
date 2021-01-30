@@ -1,0 +1,13 @@
+﻿@model IEnumerable<Yms.Web.Models.HomePageSupplierViewModel>
+<h5 class="text-uppercase mb-2">Tedarikçiler</h5>
+
+<ul class="list-unstyled small text-muted pl-lg-4 font-weight-normal">
+    @foreach (var sup in Model)
+    {
+        <li class="mb-2">
+            <a class="reset-anchor" asp-controller="Product" asp-action="Supplier" asp-route-id="@sup.Id">@sup.Name</a>
+        </li>
+    }
+
+
+</ul>

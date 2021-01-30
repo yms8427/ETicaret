@@ -9,7 +9,24 @@ namespace Yms.Web.Models
     public class MainViewModel
     {
         public List<HomePageProductViewModel> Products { get; set; }
+        
         public List<HomePageCategoryViewModel> Categories { get; set; }
+        public List<HomePageSupplierViewModel> Suppliers { get; set; }
+    }
+
+    public class HomePageSupplierViewModel
+    {
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+
+        public static IEnumerable<HomePageSupplierViewModel> GetFromDto(List<SupplierDto> suppliers)
+        {
+            return suppliers.Select(s => new HomePageSupplierViewModel
+            {
+                Id = s.Id,
+                Name = s.Name
+            }).ToList();
+        }
     }
 
     public class HomePageProductViewModel
@@ -46,6 +63,7 @@ namespace Yms.Web.Models
             });
         }
     }
+    
 
     public class HomePageCategoryViewModel
     {

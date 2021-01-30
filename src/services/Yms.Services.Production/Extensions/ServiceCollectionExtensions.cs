@@ -14,6 +14,7 @@ namespace Yms.Services.Production.Extensions
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<ISubCategoryService, SubCategoryService>();
+            services.AddScoped<ISupplierService, SupplierService>();
             //diğer servisler
             return services;
         }
