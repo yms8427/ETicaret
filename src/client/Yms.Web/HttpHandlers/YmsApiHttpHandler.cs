@@ -8,17 +8,6 @@ using Yms.Contracts.Production;
 
 namespace Yms.Web.HttpHandlers
 {
-    public interface IYmsApiHttpHandler
-    {
-        Task<CategoryHierarchyDto> GetCategoryTree();
-        Task<List<ProductDto>> GetProducts(int limit);
-        Task<List<ProductDto>> GetProductsByCategory(int limit, Guid id);
-        Task<List<ProductDto>> GetProductsBySubCategory(int limit, Guid id);
-        Task<List<ProductDto>> GetProductsBySupplier(int limit, Guid id);
-        Task<List<SupplierDto>> GetSuppliers();
-
-    }
-
     public class YmsApiHttpHandler : IYmsApiHttpHandler
     {
         private readonly HttpClient httpClient;
@@ -72,6 +61,25 @@ namespace Yms.Web.HttpHandlers
             return JsonConvert.DeserializeObject<List<ProductDto>>(json);
         }
 
+        public async Task<string> GetCategoryNameById(Guid categoryId)
+        {
+            var response = await httpClient.GetAsync($"api/production/category/category/{categoryId}");
+            response.EnsureSuccessStatusCode();
+            return JsonConvert.DeserializeObject<string>(await response.Content.ReadAsStringAsync());
+        }
 
+        public async Task<string> GetSubCategoryNameById(Guid categoryId)
+        {
+            var response = await httpClient.GetAsync($"api/production/category/sub-category/{categoryId}");
+            response.EnsureSuccessStatusCode();
+            return JsonConvert.DeserializeObject<string>(await response.Content.ReadAsStringAsync());
+        }
+
+        public async Task<string> GetSupplierNameById(Guid supplierId)
+        {
+            var response = await httpClient.GetAsync($"api/production/supplier/supplier/{supplierId}");
+            response.EnsureSuccessStatusCode();
+            return JsonConvert.DeserializeObject<string>(await response.Content.ReadAsStringAsync());
+        }
     }
 }

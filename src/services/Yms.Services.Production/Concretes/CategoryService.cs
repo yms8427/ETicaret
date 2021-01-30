@@ -89,5 +89,21 @@ namespace Yms.Services.Production.Concretes
                                                .ToList();
             return CategoryComposer.Compose(rawData);
         }
+
+        public string GetCategoryNameById(Guid id)
+        {
+            //var cat = context.Categories.FirstOrDefault(f => f.Id == id);
+            //if (cat != null)
+            //{
+            //    return cat.Name;
+            //}
+            //return string.Empty;
+            return context.Categories.FirstOrDefault(f => f.Id == id)?.Name;
+        }
+
+        public string GetSubCategoryNameById(Guid id)
+        {
+            return context.SubCategories.FirstOrDefault(f => f.Id == id)?.Name;
+        }
     }
 }
