@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Yms.Api.Middlewares;
 using Yms.Data.Context.Extensions;
+using Yms.Services.Common.Extensions;
 using Yms.Services.OrderManagement.Extensions;
 using Yms.Services.Production.Extensions;
 
@@ -22,7 +23,7 @@ namespace Yms.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDataContext(Configuration.GetSection("Settings:Database:Default").Value);
-            services.AddProductionServices().AddOrderServices();
+            services.AddProductionServices().AddOrderServices().AddCommonServices();
             services.AddControllers();
             services.AddSwaggerGen();
         }

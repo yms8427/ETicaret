@@ -60,24 +60,27 @@ namespace Yms.Web.HttpHandlers
             var json = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<List<ProductDto>>(json);
         }
-
         public async Task<string> GetCategoryNameById(Guid categoryId)
         {
             var response = await httpClient.GetAsync($"api/production/category/category/{categoryId}");
             response.EnsureSuccessStatusCode();
             return JsonConvert.DeserializeObject<string>(await response.Content.ReadAsStringAsync());
         }
-
         public async Task<string> GetSubCategoryNameById(Guid categoryId)
         {
             var response = await httpClient.GetAsync($"api/production/category/sub-category/{categoryId}");
             response.EnsureSuccessStatusCode();
             return JsonConvert.DeserializeObject<string>(await response.Content.ReadAsStringAsync());
         }
-
         public async Task<string> GetSupplierNameById(Guid supplierId)
         {
             var response = await httpClient.GetAsync($"api/production/supplier/supplier/{supplierId}");
+            response.EnsureSuccessStatusCode();
+            return JsonConvert.DeserializeObject<string>(await response.Content.ReadAsStringAsync());
+        }
+        public async Task<string> GetDocumentNameById(Guid id)
+        {
+            var response = await httpClient.GetAsync($"api/management/image/get-name/{id}");
             response.EnsureSuccessStatusCode();
             return JsonConvert.DeserializeObject<string>(await response.Content.ReadAsStringAsync());
         }

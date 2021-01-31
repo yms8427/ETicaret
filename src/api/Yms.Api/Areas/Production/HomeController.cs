@@ -47,15 +47,10 @@ namespace Yms.Api.Areas.Production
             return service.GetProductsBySupplier(count, id);
         }
 
-
         [HttpGet("product-detail")]
         public ProductDto GetProduct([FromQuery] Guid id)
         {
             return service.GetProduct(id);
         }
-
-        
-
-
     }
 }
