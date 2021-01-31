@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using Yms.Contracts.Production;
 using Yms.Data.Entities;
@@ -73,7 +74,7 @@ namespace Yms.Services.Production.Concretes
                 Price = s.Price,
                 Stock = s.Stock,
                 Category = s.SubCategory.Name,
-                ImageUrl = s.Document.PhysicalAddress
+                ImageId = s.DocumentId.HasValue ? s.DocumentId.Value : Guid.Empty
             }).ToList();
         }
 
@@ -84,41 +85,40 @@ namespace Yms.Services.Production.Concretes
 
         public IEnumerable<ProductDto> GetProductsByCategory(int count, Guid id)
         {
-            return products.Include(p => p.SubCategory).Include(i => i.Document).Where(p => p.SubCategory.CategoryId == id).Take(count).Select(s => new ProductDto
+            return products.Include(p => p.SubCategory).Where(p => p.SubCategory.CategoryId == id).Take(count).Select(s => new ProductDto
             {
                 Id = s.Id,
                 Name = s.Name,
                 Price = s.Price,
                 Stock = s.Stock,
                 Category = s.SubCategory.Name,
-                ImageUrl = s.Document.PhysicalAddress
+                ImageId = s.DocumentId.HasValue ? s.DocumentId.Value : Guid.Empty
             }).ToList();
         }
+
         public IEnumerable<ProductDto> GetProductsBySubCategory(int count, Guid id)
         {
-            return products.Include(i => i.Document).Where(p => p.SubCategoryId == id).Take(count).Select(s => new ProductDto
+            return products.Where(p => p.SubCategoryId == id).Take(count).Select(s => new ProductDto
             {
                 Id = s.Id,
                 Name = s.Name,
                 Price = s.Price,
                 Stock = s.Stock,
                 Category = s.SubCategory.Name,
-                ImageUrl = s.Document.PhysicalAddress,
-                
+                ImageId = s.DocumentId.HasValue ? s.DocumentId.Value : Guid.Empty
             }).ToList();
         }
 
         public IEnumerable<ProductDto> GetProductsBySupplier(int count, Guid id)
         {
-            return products.Include(i => i.Document).Where(p => p.SupplierId == id).Take(count).Select(s => new ProductDto
+            return products.Where(p => p.SupplierId == id).Take(count).Select(s => new ProductDto
             {
                 Id = s.Id,
                 Name = s.Name,
                 Price = s.Price,
                 Stock = s.Stock,
                 Category = s.SubCategory.Name,
-                ImageUrl = s.Document.PhysicalAddress,
-
+                ImageId = s.DocumentId.HasValue ? s.DocumentId.Value : Guid.Empty
             }).ToList();
         }
     }
