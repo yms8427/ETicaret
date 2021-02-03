@@ -22,6 +22,7 @@ namespace Yms.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options => options.AddPolicy("all", pb => { pb.AllowAnyOrigin().AllowAnyHeader(); })); // ne yapacağımı bilmediğimden all yaptım
             services.AddDataContext(Configuration.GetSection("Settings:Database:Default").Value);
             services.AddProductionServices().AddOrderServices().AddCommonServices();
             services.AddControllers();
@@ -47,7 +48,8 @@ namespace Yms.Api
             //    var context = serviceScope.ServiceProvider.GetRequiredService<DbContext>();
             //    context.Database.Migrate();
             //}
-            app.UseMiddleware<CheckHeaderMiddleware>();
+            app.UseCors("all");
+            //app.UseMiddleware<CheckHeaderMiddleware>();
             //app.UseMiddleware<LogRequestMiddleware>();
             app.UseHttpsRedirection();
             app.UseRouting();
