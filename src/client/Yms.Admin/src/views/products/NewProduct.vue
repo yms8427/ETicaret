@@ -36,7 +36,7 @@
                       id="name"
                       type="text"
                       name="text-input"
-                      placeholder="ürün adını giriniz..."
+                      placeholder="Ürün adını giriniz..."
                       v-model="NewProduct.name"
                     />
                   </div>
@@ -51,7 +51,7 @@
                         class="form-control"
                         id="price"
                         type="text"
-                        placeholder="ürün fiyatını giriniz..."
+                        placeholder="Ürün fiyatını giriniz..."
                         v-model="NewProduct.price"
                       />
                       <div class="input-group-append">
@@ -70,7 +70,7 @@
                       id="stock"
                       type="text"
                       name="text-input"
-                      placeholder="stok miktarını giriniz..."
+                      placeholder="Stok miktarını giriniz..."
                       v-model="NewProduct.stock"
                     />
                   </div>
@@ -87,7 +87,9 @@
                       id="Catgory"
                       name="select1"
                     >
-                      <option :selected="defaultCategory" value="">Kategoriyi Seçiniz</option>
+                      <option :selected="defaultCategory" value="">
+                        Kategoriyi Seçiniz
+                      </option>
                       <option :value="c.id" v-for="c in Categories" :key="c.id">
                         {{ c.name }}
                       </option>
@@ -182,7 +184,7 @@ export default {
       },
 
       successId: null,
-      defaultCategory : false,
+      defaultCategory: false,
     };
   },
   mounted() {

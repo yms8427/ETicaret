@@ -27,6 +27,14 @@ const NewProduct = () => import('@/views/products/NewProduct')
 const Products = () => import('@/views/products/Products')
 const SearchProduct = () => import('@/views/products/Search')
 
+//Suppliers
+const Suppliers = () => import('@/views/suppliers/Suppliers')
+
+//Categories
+
+const Categories = () => import('@/views/categories/Categories')
+const SubCategories = () => import('@/views/categories/SubCategories')
+
 
 Vue.use(Router)
 
@@ -37,7 +45,7 @@ export default new Router({
   routes: configRoutes()
 })
 
-function configRoutes () {
+function configRoutes() {
   return [
     {
       path: '/',
@@ -142,11 +150,57 @@ function configRoutes () {
       ]
     },
     {
+      path: "/supplier",
+      meta: {
+        label: "Sağlayıcılar"
+      },
+      component: TheContainer,
+      children: [
+        {
+          path: '',
+          meta: {
+            label: 'Sağlayıcı İşlemleri'
+          },
+          component: Suppliers,
+          name: "Sağlayıcılar"
+        },
+      ]
+      
+
+    },
+    {
+      path: "/category",
+      meta: {
+        label: "Kategori Yönetimi"
+      },
+      component: TheContainer,
+      children: [
+        {
+          path: 'categories',
+          meta: {
+            label: 'Üst Kategori İşlemleri'
+          },
+          component: Categories,
+          name: "Üst Kategori"
+        },
+        {
+          path: 'subcategories',
+          meta: {
+            label: 'Alt Kategori İşlemleri'
+          },
+          component: SubCategories,
+          name: "Alt Kategori"
+        },
+      ]
+
+
+    },
+    {
       path: '/pages',
       redirect: '/pages/404',
       name: 'Pages',
       component: {
-        render (c) { return c('router-view') }
+        render(c) { return c('router-view') }
       },
       children: [
         {

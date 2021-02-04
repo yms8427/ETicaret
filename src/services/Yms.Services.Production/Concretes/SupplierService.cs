@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Yms.Contracts.Production;
 using Yms.Data.Context;
+using Yms.Data.Entities;
 using Yms.Services.Production.Abstractions;
 
 namespace Yms.Services.Production.Concretes
@@ -34,6 +35,34 @@ namespace Yms.Services.Production.Concretes
                 Vote = s.Vote,
                 VoteCount = s.VoteCount
             }).ToList();
+        }
+
+        public Guid AddNewSupplier(NewSupplierDto data)
+        {
+            var s = new Supplier
+            {
+                Address = data.Address,
+                Created = DateTime.Now,
+                CreatedBy = Guid.Parse("00000000-0000-0000-0000-000000000001"),
+                Id = Guid.NewGuid(),
+                IsActive = true,
+                IsDeleted = false,
+                Mail = data.Mail,
+                Name = data.Name,
+                Phone = data.Phone,
+                TaxNumber = data.TaxNumber,
+                Updated = DateTime.Now,
+                UpdatedBy = Guid.Parse("00000000-0000-0000-0000-000000000001"),
+                Vote = 0,
+                VoteCount = 0 
+            };
+            context.Suppliers.Add(s);
+            var savedItemCount = context.SaveChanges();
+            if (savedItemCount > 0)
+            {
+                return s.Id;
+            }
+            return Guid.Empty;
         }
     }
 }

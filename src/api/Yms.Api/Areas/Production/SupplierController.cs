@@ -29,5 +29,11 @@ namespace Yms.Api.Areas.Production
         {
             return service.GetSuppliers();
         }
+
+        [HttpPost("add-new")]
+        public Guid AddSupplier(NewSupplierDto data)
+        {
+            return service.AddNewSupplier(data);
+        }
     }
 }
