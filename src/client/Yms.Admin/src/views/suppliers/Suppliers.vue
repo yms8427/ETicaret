@@ -11,7 +11,7 @@
         <span aria-hidden="true">&times;</span>
       </button>
       <strong>İşlem Başarıyla Gerçekleşti.</strong> <br /><br /><b
-        >Ürün Kodu: </b
+        >Sağlayıcı Kodu: </b
       >{{ successId }}
     </div>
     <div class="row">
