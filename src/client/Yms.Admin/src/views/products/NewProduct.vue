@@ -38,6 +38,7 @@
                       name="text-input"
                       placeholder="Ürün adını giriniz..."
                       v-model="NewProduct.name"
+                      autocomplete="off"
                     />
                   </div>
                 </div>
@@ -53,6 +54,7 @@
                         type="text"
                         placeholder="Ürün fiyatını giriniz..."
                         v-model="NewProduct.price"
+                        autocomplete="off"
                       />
                       <div class="input-group-append">
                         <span class="input-group-text">₺</span>
@@ -72,6 +74,7 @@
                       name="text-input"
                       placeholder="Stok miktarını giriniz..."
                       v-model="NewProduct.stock"
+                      autocomplete="off"
                     />
                   </div>
                 </div>
@@ -167,7 +170,6 @@
 </template>
 <script>
 import axios from "axios";
-import { loadOptions } from "@babel/core";
 export default {
   name: "NewProduct",
   data() {

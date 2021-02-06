@@ -18,6 +18,7 @@ namespace Yms.Api.Middlewares
         {
             if (!httpContext.Request.Headers.ContainsKey("X-Client-Type"))
             {
+                //TODO: alınan client bizde tanımlı olmalı
                 httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
                 await httpContext.Response.WriteAsync("Unknown client");
                 return;

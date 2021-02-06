@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\data\Yms.Data.Entities\Yms.Data.Entities.csproj" />
+    <ProjectReference Include="..\contracts\Yms.Contracts.CommonServices\Yms.Contracts.CommonServices.csproj" />
   </ItemGroup>
 
 </Project>

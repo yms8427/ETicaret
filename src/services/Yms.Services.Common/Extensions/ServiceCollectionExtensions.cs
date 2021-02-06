@@ -12,6 +12,7 @@ namespace Yms.Services.Common.Extensions
         public static IServiceCollection AddCommonServices(this IServiceCollection services)
         {
             services.AddScoped<IDocumentService, DocumentService>();
+            services.AddScoped<IUserService, UserService>();
             return services;
         }
     }

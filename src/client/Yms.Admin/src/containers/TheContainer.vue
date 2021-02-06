@@ -21,6 +21,7 @@
 import TheSidebar from './TheSidebar'
 import TheHeader from './TheHeader'
 import TheFooter from './TheFooter'
+import Session from "../helpers/session";
 
 export default {
   name: 'TheContainer',
@@ -28,6 +29,11 @@ export default {
     TheSidebar,
     TheHeader,
     TheFooter
+  },
+  beforeMount() {
+    if (Session.needsAuthentication()) {
+      this.$router.push("/login");
+    }
   }
 }
 </script>
