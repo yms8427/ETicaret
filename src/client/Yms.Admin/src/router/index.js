@@ -39,7 +39,7 @@ const SubCategories = () => import('@/views/categories/SubCategories')
 Vue.use(Router)
 
 export default new Router({
-  mode: 'history', // https://router.vuejs.org/api/#mode
+  mode: 'history',
   linkActiveClass: 'active',
   scrollBehavior: () => ({ y: 0 }),
   routes: configRoutes()
@@ -196,15 +196,15 @@ function configRoutes() {
 
     },
     {
-      path: '/pages',
-      redirect: '/pages/404',
+      path: '/',
+      redirect: '/not-found',
       name: 'Pages',
       component: {
         render(c) { return c('router-view') }
       },
       children: [
         {
-          path: '404',
+          path: 'not-found',
           name: 'Page404',
           component: Page404
         },

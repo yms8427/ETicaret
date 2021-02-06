@@ -37,6 +37,7 @@
                     name="text-input"
                     placeholder="Firma adını giriniz..."
                     v-model="NewSupplier.name"
+                    autocomplete="off"
                   />
                 </div>
               </div>
@@ -51,6 +52,7 @@
                     name="text-input"
                     placeholder="Mail adresini giriniz..."
                     v-model="NewSupplier.mail"
+                    autocomplete="off"
                   />
                 </div>
               </div>
@@ -59,14 +61,7 @@
                   >Telefon</label
                 >
                 <div class="col-md-9">
-                  <input
-                    class="form-control"
-                    id="phone"
-                    type="text"
-                    name="text-input"
-                    placeholder="Telefon numarasını giriniz..."
-                    v-model="NewSupplier.phone"
-                  />
+                  <vue-phone-number-input v-model="NewSupplier.phone" />
                 </div>
               </div>
               <div class="form-group row">
@@ -81,6 +76,7 @@
                     name="text-input"
                     placeholder="Vergi numarasını giriniz..."
                     v-model="NewSupplier.taxNumber"
+                    autocomplete="off"
                   />
                 </div>
               </div>
@@ -92,6 +88,7 @@
                     class="form-control"
                     id="street"
                     type="text"
+                    autocomplete="off"
                   />
                 </div>
 
@@ -103,6 +100,7 @@
                       class="form-control"
                       id="city"
                       type="text"
+                      autocomplete="off"
                     />
                   </div>
                   <div class="form-group col-sm-4">
@@ -112,6 +110,7 @@
                       class="form-control"
                       id="town"
                       type="text"
+                      autocomplete="off"
                     />
                   </div>
                   <div class="form-group col-sm-4">
@@ -121,6 +120,7 @@
                       id="postal-code"
                       type="text"
                       v-model="address.postalCode"
+                      autocomplete="off"
                     />
                   </div>
                 </div>
@@ -151,9 +151,14 @@
 </template>
 
 <script>
+import VuePhoneNumberInput from 'vue-phone-number-input';
 import axios from "axios";
+import 'vue-phone-number-input/dist/vue-phone-number-input.css';
 export default {
   name: "Suppliers",
+  components: {
+    VuePhoneNumberInput
+  },
   data() {
     return {
       NewSupplier: {

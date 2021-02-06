@@ -1,10 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Yms.Contracts.Production;
 using Yms.Services.Production.Abstractions;
 
@@ -13,6 +10,7 @@ namespace Yms.Api.Areas.Production
     [Route("api/[area]/[controller]")]
     [Area("Production")]
     [ApiController]
+    [Authorize]
     public class SubCategoryController : ControllerBase
     {
         private readonly ISubCategoryService service;
@@ -37,7 +35,7 @@ namespace Yms.Api.Areas.Production
         [HttpGet("category-detail")]
         public SubCategoryDto GetSubCategory([FromQuery] Guid id)
         {
-            return  service.GetSubCategory(id);
+            return service.GetSubCategory(id);
         }
     }
 }

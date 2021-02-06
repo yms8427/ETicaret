@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using Yms.Contracts.Production;
@@ -9,6 +10,7 @@ namespace Yms.Api.Areas.Production
     [ApiController]
     [Area("Production")]
     [Route("api/[area]/[controller]")]
+    [Authorize]
     public class HomeController : ControllerBase
     {
         private readonly IProductService service;
