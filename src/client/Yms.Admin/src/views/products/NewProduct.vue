@@ -169,7 +169,7 @@
   </div>
 </template>
 <script>
-import axios from "axios";
+import ajax from "../../helpers/ajax";
 export default {
   name: "NewProduct",
   data() {
@@ -206,11 +206,9 @@ export default {
       data.price = Number(data.price);
       data.stock = Number(data.stock);
 
-      axios
-        .post("https://localhost:5001/api/production/home/add-new", data)
-        .then((response) => {
-          self.successId = response.data;
-        });
+      ajax.post("api/production/home/add-new", data, (data) => {
+        self.successId = data;
+      });
     },
     RefreshAll() {
       this.NewProduct.name = "";
@@ -224,24 +222,18 @@ export default {
   },
 };
 function LoadCategories(self) {
-  axios
-    .get("https://localhost:5001/api/production/category/list")
-    .then((response) => {
-      self.Categories = response.data;
-    });
+  ajax.get("api/production/category/list", (data) => {
+    self.Categories = data;
+  });
 }
 function LoadSubCategories(self, categoryId) {
-  axios
-    .get(`https://localhost:5001/api/production/subcategory/list/${categoryId}`)
-    .then((response) => {
-      self.SubCategories = response.data;
-    });
+  ajax.get(`api/production/subcategory/list/${categoryId}`, (data) => {
+    self.SubCategories = data;
+  });
 }
 function LoadSuppliers(self) {
-  axios
-    .get("https://localhost:5001/api/production/supplier/list")
-    .then((response) => {
-      self.Suppliers = response.data;
-    });
+  ajax.get("api/production/supplier/list", (data) => {
+    self.Suppliers = data;
+  });
 }
 </script>

@@ -43,7 +43,7 @@ namespace Yms.Api.Controllers
                         new Claim(ClaimTypes.Name, user.UserName),
                         new Claim(ClaimTypes.GivenName, user.DisplayName)
                     }),
-                    Expires = DateTime.Now.AddMinutes(15),
+                    Expires = DateTime.Now.AddMinutes(50),
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
                 };
                 var tokenHandler = new JwtSecurityTokenHandler();

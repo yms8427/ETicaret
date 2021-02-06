@@ -90,7 +90,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import ajax from "../../helpers/ajax";
 export default {
   name: "SubCategories",
   data() {
@@ -116,27 +116,22 @@ export default {
       var self = this;
       var data = {};
       Object.assign(data, this.NewSubCategory);
-      axios
-        .post("https://localhost:5001/api/production/subcategory/add-new", data)
-        .then((response) => {
-            self.successId = response.data;
-        });
+      ajax.post("api/production/subcategory/add-new", data, (data) => {
+        self.successId = data;
+      });
     },
     RefreshAll() {
-        this.defaultCategory = true;
-        this.successId = null;
-        this.NewSubCategory.categoryId = "";
-        this.NewSubCategory.name = "";
-
+      this.defaultCategory = true;
+      this.successId = null;
+      this.NewSubCategory.categoryId = "";
+      this.NewSubCategory.name = "";
     },
   },
 };
 function LoadCategories(self) {
-  axios
-    .get("https://localhost:5001/api/production/category/list")
-    .then((response) => {
-      self.Categories = response.data;
-    });
+  ajax.get("api/production/category/list", (data) => {
+    self.Categories = data;
+  });
 }
 </script>
 
