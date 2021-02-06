@@ -56,21 +56,21 @@ export default [
         _name: 'CSidebarNavItem',
         name: 'Sağlayıcılar',
         icon: 'cil-puzzle',
-        to: '/base/breadcrumbs'
+        to: '/supplier'
       },
       {
         _name: 'CSidebarNavDropdown',
         name: 'Kategori Yönetimi',
-        route: '/product',
+        route: '/category',
         icon: 'cil-puzzle',
         items: [
           {
             name: 'Üst Kategori',
-            to: '/base/breadcrumbs'
+            to: '/category/categories'
           },
           {
             name: 'Alt Kategori',
-            to: '/base/cards'
+            to: '/category/subcategories'
           }
         ]
       }
