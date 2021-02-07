@@ -81,7 +81,8 @@ function configRoutes() {
               },
               name: 'User',
               component: User
-            }
+            }, 
+            
           ]
         },
         {

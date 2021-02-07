@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- modal -->
     <div
       class="modal fade"
       id="exampleModalCenter"
@@ -10,10 +11,10 @@
     >
       <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
-          <div class="modal-header">
+          <div class="modal-header bg-danger">
             <h5 class="modal-title" id="exampleModalLongTitle">
-              Sağlayıcı Kodu:
-              <span style="color: red">{{ detailedSupplier.id }}</span>
+              <span style="color: black" class="mr-5">Sağlayıcı Kodu:</span>
+              <span style="color: white">{{ detailedSupplier.id }}</span>
             </h5>
             <button
               type="button"
@@ -21,7 +22,7 @@
               data-dismiss="modal"
               aria-label="Close"
             >
-              <span aria-hidden="true">&times;</span>
+              <span aria-hidden="true" class=" text-light">&times;</span>
             </button>
           </div>
           <div class="modal-body">
@@ -99,7 +100,7 @@
       </div>
     </div>
     <!-- /modal -->
-    <div class="alert alert-success" v-if="successId != null">
+    <div class="alert alert-success fade-in" v-if="successId != null">
       <button
         type="button"
         class="close"
@@ -261,6 +262,7 @@
               </thead>
               <tbody>
                 <tr
+                  class=" fade-in"
                   v-for="s in suppliers"
                   :key="s.id"
                   :class="s.id == suppliers[0].id ? tableSuccess : ''"
