@@ -27,30 +27,35 @@ namespace Yms.Api.Areas.Production
         }
 
         [HttpGet("list")]
+        [AllowAnonymous]
         public IEnumerable<CategoryDto> ListCategories()
         {
             return service.GetCategories();
         }
 
         [HttpGet("category-detail")]
+        [AllowAnonymous]
         public CategoryDto GetCategory([FromQuery] Guid id)
         {
             return service.GetCategory(id);
         }
 
         [HttpGet("get-category-tree")]
+        [AllowAnonymous]
         public CategoryHierarchyDto GetCategoryHierarchy()
         {
             return service.GetCategoryHierarchy();
         }
 
         [HttpGet("category/{categoryId}")]
+        [AllowAnonymous]
         public string GetCategoryById(Guid categoryId)
         {
             return service.GetCategoryNameById(categoryId);
         }
 
         [HttpGet("sub-category/{categoryId}")]
+        [AllowAnonymous]
         public string GetSubCategoryById(Guid categoryId)
         {
             return service.GetSubCategoryNameById(categoryId);

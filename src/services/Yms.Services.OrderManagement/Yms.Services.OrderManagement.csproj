@@ -8,4 +8,9 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.11" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\data\Yms.Data.Context\Yms.Data.Context.csproj" />
+    <ProjectReference Include="..\..\data\Yms.Data.Entities\Yms.Data.Entities.csproj" />
+  </ItemGroup>
+
 </Project>

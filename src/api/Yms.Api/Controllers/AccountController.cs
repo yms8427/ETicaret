@@ -47,7 +47,14 @@ namespace Yms.Api.Controllers
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var token = tokenHandler.CreateToken(tokenDescriptor);
                 string jwtToken = tokenHandler.WriteToken(token);
-                return Ok(jwtToken);
+                var result = new DetailedSessionInformation
+                {
+                    Token = jwtToken,
+                    Id = user.Id,
+                    DisplayName = user.DisplayName,
+                    UserName = user.UserName
+                };
+                return Ok(result);
             }
             return BadRequest("incorrect credentials");
         }

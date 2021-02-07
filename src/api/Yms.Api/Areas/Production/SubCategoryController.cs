@@ -27,12 +27,14 @@ namespace Yms.Api.Areas.Production
         }
 
         [HttpGet("list/{categoryId}")]
+        [AllowAnonymous]
         public IEnumerable<SubCategoryDto> ListSubCategories(Guid categoryId)
         {
             return service.GetSubCategories(categoryId);
         }
 
         [HttpGet("category-detail")]
+        [AllowAnonymous]
         public SubCategoryDto GetSubCategory([FromQuery] Guid id)
         {
             return service.GetSubCategory(id);

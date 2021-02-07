@@ -22,4 +22,9 @@ namespace Yms.Common.Contracts
         public string UserName { get; set; }
         public string DisplayName { get; set; }
     }
+
+    public class DetailedSessionInformation : UserSessionData
+    {
+        public string Token { get; set; }
+    }
 }
