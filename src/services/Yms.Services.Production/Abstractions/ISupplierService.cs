@@ -9,5 +9,6 @@ namespace Yms.Services.Production.Abstractions
         IEnumerable<SupplierDto> GetSuppliers();
         string GetSupplierNameById(Guid id);
         Guid AddNewSupplier(NewSupplierDto data);
+        SupplierDto GetSupplier(Guid id);
     }
 }

@@ -22,9 +22,12 @@ namespace Yms.Services.Production.Concretes
             return context.Suppliers.FirstOrDefault(f => f.Id == id)?.Name;
         }
 
+
+
+
         public IEnumerable<SupplierDto> GetSuppliers()
         {
-            return context.Suppliers.Select(s => new SupplierDto
+            return context.Suppliers.OrderByDescending(s => s.Created).Select(s => new SupplierDto
             {
                 Id = s.Id,
                 Address = s.Address,
@@ -54,7 +57,7 @@ namespace Yms.Services.Production.Concretes
                 Updated = DateTime.Now,
                 UpdatedBy = Guid.Parse("00000000-0000-0000-0000-000000000001"),
                 Vote = 0,
-                VoteCount = 0 
+                VoteCount = 0
             };
             context.Suppliers.Add(s);
             var savedItemCount = context.SaveChanges();
@@ -63,6 +66,21 @@ namespace Yms.Services.Production.Concretes
                 return s.Id;
             }
             return Guid.Empty;
+        }
+
+        public SupplierDto GetSupplier(Guid id)
+        {
+            return context.Suppliers.Where(s => s.Id == id).Select(s => new SupplierDto
+            {
+                Name = s.Name,
+                Id = s.Id,
+                Address = s.Address,
+                Mail = s.Mail,
+                Phone = s.Phone,
+                TaxNumber = s.TaxNumber,
+                Vote = s.Vote,
+                VoteCount = s.VoteCount
+            }).FirstOrDefault();
         }
     }
 }

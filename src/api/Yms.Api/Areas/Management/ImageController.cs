@@ -24,6 +24,7 @@ namespace Yms.Api.Areas.Management
             return service.GetFileNameByDocumentId(id);
         }
     }
+
 }
 
 //https://www.yms.com/api/managament/image/upload

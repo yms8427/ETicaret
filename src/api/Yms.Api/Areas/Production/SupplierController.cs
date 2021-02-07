@@ -21,9 +21,15 @@ namespace Yms.Api.Areas.Production
         }
 
         [HttpGet("supplier/{supplierId}")]
-        public string GetCategoryById(Guid supplierId)
+        public string GetSupplierById(Guid supplierId)
         {
             return service.GetSupplierNameById(supplierId);
+        }
+
+        [HttpGet("supplier-detail/{id}")]
+        public SupplierDto GetSupplier(Guid id)
+        {
+            return service.GetSupplier(id);
         }
 
         [HttpGet("list")]

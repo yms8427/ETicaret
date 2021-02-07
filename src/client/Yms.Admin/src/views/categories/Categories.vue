@@ -26,9 +26,7 @@
               enctype="multipart/form-data"
             >
               <div class="form-group row">
-                <label class="col-md-3 col-form-label" for="name"
-                  >Adı</label
-                >
+                <label class="col-md-3 col-form-label" for="name">Adı</label>
                 <div class="col-md-9">
                   <input
                     class="form-control"
@@ -83,7 +81,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import ajax from "../../helpers/ajax";
 export default {
   name: "Categories",
   data() {
@@ -100,11 +98,9 @@ export default {
       var self = this;
       var data = {};
       Object.assign(data, this.NewCategory);
-      axios
-        .post("https://localhost:5001/api/production/category/add-new", data)
-        .then((response) => {
-          self.successId = response.data;
-        });
+      ajax.post("api/production/category/add-new", data, (data) => {
+        self.successId = data;
+      });
     },
     RefreshAll() {
       this.successId = null;

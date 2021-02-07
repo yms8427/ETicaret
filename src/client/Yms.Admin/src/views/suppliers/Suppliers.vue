@@ -1,6 +1,106 @@
 <template>
   <div>
-    <div class="alert alert-success" v-if="successId != null">
+    <!-- modal -->
+    <div
+      class="modal fade"
+      id="exampleModalCenter"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalCenterTitle"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header bg-danger">
+            <h5 class="modal-title" id="exampleModalLongTitle">
+              <span style="color: black" class="mr-5">Sağlayıcı Kodu:</span>
+              <span style="color: white">{{ detailedSupplier.id }}</span>
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true" class=" text-light">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group row">
+              <label class="col-md-3 col-form-label" for="address"
+                ><b>Adresi</b></label
+              >
+              <div class="col-md-9">
+                <input
+                  class="form-control"
+                  id="address"
+                  type="text"
+                  name="text-input"
+                  readonly
+                  v-model="detailedSupplier.address"
+                />
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-3 col-form-label" for="taxNumber"
+                ><b>Vergi Numarası</b></label
+              >
+              <div class="col-md-9">
+                <input
+                  class="form-control"
+                  id="taxNumber"
+                  type="text"
+                  name="text-input"
+                  readonly
+                  v-model="detailedSupplier.taxNumber"
+                />
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-3 col-form-label" for="vote"
+                ><b>Oy</b></label
+              >
+              <div class="col-md-9">
+                <input
+                  class="form-control"
+                  id="vote"
+                  type="text"
+                  name="text-input"
+                  readonly
+                  v-model="detailedSupplier.vote"
+                />
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-3 col-form-label" for="voteCount"
+                ><b>Oy Sayısı</b></label
+              >
+              <div class="col-md-9">
+                <input
+                  class="form-control"
+                  id="voteCount"
+                  type="text"
+                  name="text-input"
+                  readonly
+                  v-model="detailedSupplier.voteCount"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Kapat
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /modal -->
+    <div class="alert alert-success fade-in" v-if="successId != null">
       <button
         type="button"
         class="close"
@@ -145,22 +245,68 @@
           </div>
         </div>
       </div>
-      <div class="col-md-12 col-lg-6"></div>
+      <div class="col-md-12 col-lg-6">
+        <div class="card">
+          <div class="card-header">
+            <i class="fa fa-align-justify"></i><b>Sağlayıcı Listesi</b>
+          </div>
+          <div class="card-body custom-height">
+            <table class="table table-responsive-sm table-hover table-striped">
+              <thead>
+                <tr>
+                  <th>Firma Adı</th>
+                  <th>Email Adresi</th>
+                  <th>Telefon Numarası</th>
+                  <th>Detaylar</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  class=" fade-in"
+                  v-for="s in suppliers"
+                  :key="s.id"
+                  :class="s.id == suppliers[0].id ? tableSuccess : ''"
+                >
+                  <td>{{ s.name }}</td>
+                  <td>{{ s.mail }}</td>
+                  <td>{{ s.phone }}</td>
+                  <td>
+                    <button
+                      @click="ShowDetail(s.id)"
+                      class="btn btn-outline-danger"
+                    >
+                      Detay
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import VuePhoneNumberInput from 'vue-phone-number-input';
-import axios from "axios";
-import 'vue-phone-number-input/dist/vue-phone-number-input.css';
+import VuePhoneNumberInput from "vue-phone-number-input";
+import "vue-phone-number-input/dist/vue-phone-number-input.css";
+import ajax from "../../helpers/ajax";
 export default {
   name: "Suppliers",
   components: {
-    VuePhoneNumberInput
+    VuePhoneNumberInput,
   },
   data() {
     return {
+      detailedSupplier: {
+        id: "",
+        address: "",
+        taxNumber: "",
+        vote: "",
+        voteCount: "",
+      },
+      suppliers: [],
       NewSupplier: {
         name: "",
         mail: "",
@@ -176,20 +322,30 @@ export default {
       },
 
       successId: null,
+      tableSuccess: "",
     };
   },
+  mounted() {
+    this.LoadSuppliers();
+  },
   methods: {
+    LoadSuppliers() {
+      ajax.get("api/production/supplier/list", (data) => {
+        this.suppliers = data;
+      });
+    },
     AddNewSupplier() {
       var self = this;
       var data = {};
       Object.assign(data, this.NewSupplier);
       data.address = `${this.address.street}, ${this.address.postalCode} ${this.address.town}/${this.address.city}`;
-      axios
-        .post("https://localhost:5001/api/production/supplier/add-new", data)
-        .then((response) => {
-          self.successId = response.data;
-        });
+      ajax.post("api/production/supplier/add-new", data, (data) => {
+        self.successId = data;
+        self.tableSuccess = "table-success";
+        self.LoadSuppliers();
+      });
     },
+    openModal() {},
     RefreshAll() {
       this.NewSupplier.name = "";
       this.NewSupplier.mail = "";
@@ -203,9 +359,24 @@ export default {
       this.address.postalCode = "";
       this.successId = null;
     },
+    ShowDetail(id) {
+      ajax.get(`api/production/supplier/supplier-detail/${id}`, (data) => {
+        this.detailedSupplier.address = data.address;
+        this.detailedSupplier.taxNumber = data.taxNumber;
+        this.detailedSupplier.vote = data.vote;
+        this.detailedSupplier.voteCount = data.voteCount;
+        this.detailedSupplier.id = data.id;
+
+        $("#exampleModalCenter").modal("show");
+      });
+    },
   },
 };
 </script>
 
-<style>
+<style scoped>
+.custom-height {
+  height: 496px !important;
+  overflow: scroll;
+}
 </style>

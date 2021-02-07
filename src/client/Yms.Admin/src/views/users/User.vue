@@ -3,7 +3,7 @@
     <CCol col="12" lg="6">
       <CCard>
         <CCardHeader>
-          Kullanıcı Kodud:  {{ $route.params.id }}
+          Kullanıcı Kodu:  {{ $route.params.id }}
         </CCardHeader>
         <CCardBody>
           <CDataTable
@@ -23,7 +23,6 @@
 </template>
 
 <script>
-import usersData from './UsersData'
 export default {
   name: 'User',
   beforeRouteEnter(to, from, next) {

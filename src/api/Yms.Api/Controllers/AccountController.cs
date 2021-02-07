@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using Yms.Api.Models;
 using Yms.Common.Contracts;
+using Yms.Contracts.CommonServices;
 using Yms.Services.Common.Abstractions;
 
 namespace Yms.Api.Controllers
@@ -43,7 +41,7 @@ namespace Yms.Api.Controllers
                         new Claim(ClaimTypes.Name, user.UserName),
                         new Claim(ClaimTypes.GivenName, user.DisplayName)
                     }),
-                    Expires = DateTime.Now.AddMinutes(15),
+                    Expires = DateTime.Now.AddMinutes(50),
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
                 };
                 var tokenHandler = new JwtSecurityTokenHandler();
@@ -54,22 +52,20 @@ namespace Yms.Api.Controllers
             return BadRequest("incorrect credentials");
         }
 
-        //[HttpPost("register")]
-        //public IActionResult Register([FromBody] RegisterInputModel model)
-        //{
-        //    var dto = new RegisterDto
-        //    {
-        //        UserName = model.UserName,
-        //        Password = model.Password,
-        //        FirstName = model.FirstName,
-        //        LastName = model.LastName,
-        //        BirthDate = model.BirthDate
-        //    };
-        //    if (service.Register(dto))
-        //    {
-        //        return Ok(true);
-        //    }
-        //    return BadRequest(false);
-        //}
+        [HttpGet("list")]
+        public IEnumerable<UserDto> ListUsers()
+        {
+            return service.GetUsers();
+        }
+
+        [HttpPost("register")]
+        public IActionResult Register([FromBody] NewUserDto newUser)
+        {
+            if (service.Register(newUser))
+            {
+                return Ok(true);
+            }
+            return BadRequest(false);
+        }
     }
 }
