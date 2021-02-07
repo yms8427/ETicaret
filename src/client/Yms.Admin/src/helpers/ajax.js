@@ -8,13 +8,16 @@ function getHeader() {
   }
   return result;
 }
-const ax = axios.create({
-  baseURL: "https://localhost:5001",
-  headers: getHeader(),
-});
+
+function createAxios() {
+  return axios.create({
+    baseURL: "https://localhost:5001",
+    headers: getHeader(),
+  });
+}
 
 function get(url, callback) {
-  ax.get(url)
+  createAxios().get(url)
     .then((response) => {
       callback(response.data);
     })
@@ -22,7 +25,7 @@ function get(url, callback) {
 }
 
 function post(url, data, callback) {
-  ax.post(url, data)
+  createAxios().post(url, data)
     .then((response) => {
       callback(response.data);
     })

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Yms.Common.Contracts;
 using Yms.Contracts.Production;
 using Yms.Data.Context;
 using Yms.Data.Entities;
@@ -12,10 +13,12 @@ namespace Yms.Services.Production.Concretes
     internal class SubCategoryService : ISubCategoryService
     {
         private readonly YmsDbContext context;
+        private readonly IClaims claims;
 
-        public SubCategoryService(YmsDbContext context)
+        public SubCategoryService(YmsDbContext context, IClaims claims)
         {
             this.context = context;
+            this.claims = claims;
         }
         public Guid AddNewSubCategory(NewSubCategoryDto data)
         {
@@ -34,8 +37,8 @@ namespace Yms.Services.Production.Concretes
                 IsDeleted = false,
                 ImageUrl = null,
                 Name = data.Name,
-                CreatedBy = Guid.Parse("00000000-0000-0000-0000-000000000001"),
-                UpdatedBy = Guid.Parse("00000000-0000-0000-0000-000000000001"),
+                CreatedBy = claims.Session.Id,
+                UpdatedBy = claims.Session.Id,
             };
             context.SubCategories.Add(sc);
             var resultValue = context.SaveChanges();
