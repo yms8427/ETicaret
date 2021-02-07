@@ -1,19 +1,30 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
+using Yms.Common.Contracts;
 using Yms.Contracts.Production;
+using Yms.Web.Models;
 
 namespace Yms.Web.HttpHandlers
 {
     public class YmsApiHttpHandler : IYmsApiHttpHandler
     {
         private readonly HttpClient httpClient;
+        private readonly string token;
 
-        public YmsApiHttpHandler(HttpClient httpClient)
+        public YmsApiHttpHandler(HttpClient httpClient, IHttpContextAccessor httpContextAccessor)
         {
+            if (httpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
+            {
+                this.token = httpContextAccessor.HttpContext.User.Claims.First(i => i.Type == "JwtToken").Value;
+            }
+            
             this.httpClient = httpClient;
         }
 
@@ -83,6 +94,31 @@ namespace Yms.Web.HttpHandlers
             var response = await httpClient.GetAsync($"api/management/image/get-name/{id}");
             response.EnsureSuccessStatusCode();
             return JsonConvert.DeserializeObject<string>(await response.Content.ReadAsStringAsync());
+        }
+
+        public async Task<bool> AddToCart(Guid productId, byte count)
+        {
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = await httpClient.PostAsync($"api/sales/cart/add/{productId}/{count}", null);
+
+            switch (response.StatusCode)
+            {
+                case System.Net.HttpStatusCode.Unauthorized:
+                case System.Net.HttpStatusCode.BadRequest:
+                    return false;
+                case System.Net.HttpStatusCode.OK:
+                    return true;
+            }
+            return false;
+        }
+
+        public async Task<DetailedSessionInformation> Authenticate(string userName, string password)
+        {
+            var loginInfo = JsonConvert.SerializeObject(new { username = userName, password = password });
+            var content = new StringContent(loginInfo, Encoding.UTF8, "application/json");
+            var response = await httpClient.PostAsync($"api/account/login", content);
+            response.EnsureSuccessStatusCode();
+            return JsonConvert.DeserializeObject<DetailedSessionInformation>(await response.Content.ReadAsStringAsync());
         }
     }
 }

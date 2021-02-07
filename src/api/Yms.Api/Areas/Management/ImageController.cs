@@ -19,6 +19,7 @@ namespace Yms.Api.Areas.Management
         }
 
         [HttpGet("get-name/{id}")]
+        [AllowAnonymous]
         public string GetFileNameByDocumentId(Guid id)
         {
             return service.GetFileNameByDocumentId(id);

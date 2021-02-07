@@ -21,18 +21,21 @@ namespace Yms.Api.Areas.Production
         }
 
         [HttpGet("supplier/{supplierId}")]
+        [AllowAnonymous]
         public string GetSupplierById(Guid supplierId)
         {
             return service.GetSupplierNameById(supplierId);
         }
 
         [HttpGet("supplier-detail/{id}")]
+        [AllowAnonymous]
         public SupplierDto GetSupplier(Guid id)
         {
             return service.GetSupplier(id);
         }
 
         [HttpGet("list")]
+        [AllowAnonymous]
         public IEnumerable<SupplierDto> ListSuppliers()
         {
             return service.GetSuppliers();

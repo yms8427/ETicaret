@@ -11,12 +11,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\css\" />
+    <Folder Include="wwwroot\css\login\" />
     <Folder Include="wwwroot\img\" />
     <Folder Include="wwwroot\js\" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\common\Yms.Common.Contracts\Yms.Common.Contracts.csproj" />
     <ProjectReference Include="..\..\services\contracts\Yms.Contracts.Production\Yms.Contracts.Production.csproj" />
   </ItemGroup>
 

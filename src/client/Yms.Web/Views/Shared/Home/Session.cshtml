@@ -1,0 +1,16 @@
+﻿@{
+    string GetDisplayName()
+    {
+        return User.Claims.First(i => i.Type == System.Security.Claims.ClaimTypes.GivenName).Value;
+    }
+}
+
+@if (User.Identity.IsAuthenticated)
+{
+    <li class="nav-item"><a class="nav-link" asp-controller="Account" asp-action="Profile"> <i class="fas fa-user-alt mr-1 text-gray"></i>@GetDisplayName()</a></li>
+    <li class="nav-item"><a class="nav-link" asp-controller="Account" asp-action="Logout"> <i class="fas fa-signout-alt mr-1 text-gray"></i>Çıkış Yap</a></li>
+}
+else
+{
+    <li class="nav-item"><a class="nav-link" asp-controller="Account" asp-action="Login"> <i class="fas fa-user-alt mr-1 text-gray"></i>Giriş Yap</a></li>
+}

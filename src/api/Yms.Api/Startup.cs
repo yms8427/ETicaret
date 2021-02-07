@@ -31,6 +31,7 @@ namespace Yms.Api
             services.AddCors(options => options.AddPolicy("all", pb => { pb.AllowAnyOrigin().AllowAnyHeader(); })); // ne yapacağımı bilmediğimden all yaptım
             services.AddDataContext(Configuration.GetSection("Settings:Database:Default").Value);
             services.AddProductionServices().AddOrderServices().AddCommonServices();
+            services.AddScoped<IClaims, UserClaims>();
             services.AddControllers();
             services.AddAuthentication(x =>
             {
@@ -82,7 +83,7 @@ namespace Yms.Api
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseAuthorization();
+            app.UseMiddleware<CheckUserClaimsMiddleware>();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(name: "Area", pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");

@@ -367,7 +367,7 @@ export default {
         this.detailedSupplier.voteCount = data.voteCount;
         this.detailedSupplier.id = data.id;
 
-        $("#exampleModalCenter").modal("show");
+        window.$("#exampleModalCenter").modal("show");
       });
     },
   },
