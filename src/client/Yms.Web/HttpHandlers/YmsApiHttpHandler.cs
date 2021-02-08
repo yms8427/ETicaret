@@ -120,5 +120,14 @@ namespace Yms.Web.HttpHandlers
             response.EnsureSuccessStatusCode();
             return JsonConvert.DeserializeObject<DetailedSessionInformation>(await response.Content.ReadAsStringAsync());
         }
+
+        public async Task<bool> Register(RegisterViewModel data)
+        {
+            var content = JsonConvert.SerializeObject(data);
+            var stringContent = new StringContent(content, Encoding.UTF8, "application/json");
+            var response = await httpClient.PostAsync($"api/account/register", stringContent);
+            response.EnsureSuccessStatusCode();
+            return JsonConvert.DeserializeObject<bool>(await response.Content.ReadAsStringAsync());
+        }
     }
 }

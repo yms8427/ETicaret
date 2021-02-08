@@ -42,6 +42,9 @@
                   prepend="@"
                   v-model="newUser.mail"
                 />
+                <div class="form-group">
+                  <vue-phone-number-input v-model="newUser.phone"/>
+                </div>
                 <CInput
                   placeholder="Telefon Numarası"
                   autocomplete="off"
@@ -54,9 +57,9 @@
                 <CSelect
                   placeholder="Rol"
                   :options="[
-                    { value: 'Admin', label: 'Admin' }, //TODO: bu kısmı Api tarafından getir.
-                    { value: 'Client', label: 'Müşteri' },
-                    { value: 'Supplier', label: 'Sağlayıcı' },
+                    { value: 3, label: 'Admin' },
+                    { value: 1, label: 'Müşteri' },
+                    { value: 2, label: 'Sağlayıcı' },
                   ]"
                   @change="selectChanged"
                 >
@@ -99,8 +102,13 @@
 
 <script>
 import ajax from "../../helpers/ajax";
+import VuePhoneNumberInput from "vue-phone-number-input";
+import "vue-phone-number-input/dist/vue-phone-number-input.css";
 export default {
   name: "Register",
+  components: {
+    VuePhoneNumberInput,
+  },
   data() {
     return {
       successModal: false,
@@ -110,14 +118,14 @@ export default {
         userName: "",
         mail: "",
         phone: "",
-        type: "",
+        type: null,
         password: "",
       },
     };
   },
   methods: {
     selectChanged(e) {
-      this.newUser.type = e.target.value;
+      this.newUser.type = Number(e.target.value);
     },
     AddNewUser() {
       ajax.post("api/account/register", this.newUser, (data) => {

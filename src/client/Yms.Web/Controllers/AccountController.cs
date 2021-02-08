@@ -23,6 +23,10 @@ namespace Yms.Web.Controllers
         {
             return View();
         }
+        public IActionResult Register()
+        {
+            return View();
+        }
 
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
@@ -48,6 +52,20 @@ namespace Yms.Web.Controllers
                                           new ClaimsPrincipal(claimsIdentity), 
                                           authProperties);
             return Redirect("/");
+        }
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterViewModel model)
+        {
+            var result = await httpHandler.Register(model);
+            if (result)
+            {
+                return Redirect("/Account/Login");
+            }
+            else
+            {
+                return BadRequest("Kayıt Tamamlanamadı!");
+            }
+            
         }
 
         public IActionResult Index()
