@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Yms.Common.Contracts;
+using Yms.Contracts.Production;
 using Yms.Services.OrderManagement.Abstractions;
 
 namespace Yms.Api.Areas.Sales
@@ -38,6 +39,14 @@ namespace Yms.Api.Areas.Sales
                 return Ok();
             }
             return BadRequest();
+        }
+
+
+        [HttpGet("get-products/{userId}")]
+
+        public IEnumerable<CartDto> GetProducts(Guid userId)
+        {
+            return service.GetProductByUserId(userId);
         }
     }
 }

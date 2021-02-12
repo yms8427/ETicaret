@@ -6,17 +6,20 @@ namespace Yms.Web.Models
     {
         [Required]
         public string UserName { get; set; }
+
         [Required]
         public string Password { get; set; }
+
         [Required]
         public string DisplayName { get; set; }
+
         [Required]
         public string Mail { get; set; }
+
         [Required]
         public string Phone { get; set; }
+
         [Required]
         public int type { get; } = 1;
-
-
     }
 }
