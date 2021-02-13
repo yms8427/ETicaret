@@ -48,5 +48,12 @@ namespace Yms.Api.Areas.Sales
         {
             return service.GetProductByUserId(userId);
         }
+
+        [HttpPost("update-cart")]
+
+        public bool UpdateCart([FromQuery]Guid productId, [FromQuery]byte amount)
+        {
+            return service.UpdateCart(claims.Session.Id, productId, amount);
+        }
     }
 }

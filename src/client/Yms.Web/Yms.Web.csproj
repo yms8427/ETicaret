@@ -13,7 +13,7 @@
   <ItemGroup>
     <Folder Include="wwwroot\css\login\" />
     <Folder Include="wwwroot\img\" />
-    <Folder Include="wwwroot\js\" />
+    <Folder Include="wwwroot\vendor\vue\" />
   </ItemGroup>
 
   <ItemGroup>

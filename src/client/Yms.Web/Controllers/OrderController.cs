@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Yms.Common.Contracts;
 using Yms.Web.HttpHandlers;
+using Yms.Web.Models;
 
 namespace Yms.Web.Controllers
 {
@@ -20,14 +21,27 @@ namespace Yms.Web.Controllers
             this.claims = claims;
         }
 
-        public async Task<IActionResult> Cart()
+        public IActionResult Cart()
         {
             if (!claims.IsAuthenticated)
             {
                 return Redirect("/Account/Login");
             }
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetCartItems()
+        {
             var data = await httpHandler.GetProductForCart(claims.Session.Id);
-            return View(data);
+            return Json(data);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateCart([FromBody]UpdateCartViewModel model)
+        {
+            var result = await httpHandler.UpdateCart(model.ProductId, model.Amount);
+            return Json(result);
         }
 
         public async Task<IActionResult> AddToCart(Guid productId)

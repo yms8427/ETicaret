@@ -49,6 +49,19 @@ namespace Yms.Services.OrderManagement.Concretes
                 
             }).ToList();
         }
+
+        public bool UpdateCart(Guid userId, Guid productId, byte amount)
+        {
+            var cartItem = table.FirstOrDefault(f => f.UserId == userId && f.ProductId == productId);
+            if (cartItem != null)
+            {
+                cartItem.Amount = amount;
+                cartItem.Updated = DateTime.Now;
+                context.SaveChanges();
+                return true;
+            }
+            return false;
+        }
     }
 }
 

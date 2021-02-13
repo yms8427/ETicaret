@@ -121,5 +121,16 @@ namespace Yms.Services.Production.Concretes
                 ImageId = s.DocumentId.HasValue ? s.DocumentId.Value : Guid.Empty
             }).ToList();
         }
+
+        public bool SetMainImage(Guid productId, Guid documentId)
+        {
+            var product = products.FirstOrDefault(f => f.Id == productId);
+            if(product != null)
+            {
+                product.DocumentId = documentId;
+                return context.SaveChanges() > 0; 
+            }
+            return false;
+        }
     }
 }

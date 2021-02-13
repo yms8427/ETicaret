@@ -51,6 +51,7 @@ namespace Yms.Web
             app.UseRouting();
             app.UseAuthentication();
             app.UseMiddleware<CheckUserClaimsMiddleware>();
+            //app.UseMiddleware<RequestResponseLoggingMiddleware>();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

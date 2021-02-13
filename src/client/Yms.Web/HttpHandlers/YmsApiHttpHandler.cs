@@ -24,7 +24,7 @@ namespace Yms.Web.HttpHandlers
             {
                 this.token = claims.Session.Extras[Constants.JwtTokenName].ToString();
             }
-            
+
             this.httpClient = httpClient;
         }
 
@@ -144,23 +144,21 @@ namespace Yms.Web.HttpHandlers
                     return null;
                 case System.Net.HttpStatusCode.OK:
                     var products = JsonConvert.DeserializeObject<IEnumerable<CartViewModel>>(await response.Content.ReadAsStringAsync()).ToList();
-                    return new CartMainViewModel() { 
-                        ProductsOfCart = products,
-                        Total = CalculateTotalPrice(products)
+                    return new CartMainViewModel()
+                    {
+                        ProductsOfCart = products
                     };
             }
             return null;
 
         }
 
-        private decimal CalculateTotalPrice(List<CartViewModel> products)
+        public async Task<bool> UpdateCart(Guid productId, int amount)
         {
-            decimal total = 0;
-            foreach (var p in products)
-            {
-                total += p.SubTotal;
-            }
-            return total;
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = await httpClient.PostAsync($"api/sales/cart/update-cart?productId={productId}&amount={amount}", null);
+            response.EnsureSuccessStatusCode();
+            return true;
         }
     }
 }
