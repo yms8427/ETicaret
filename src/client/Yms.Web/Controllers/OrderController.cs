@@ -4,35 +4,44 @@ using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Yms.Common.Contracts;
 using Yms.Web.HttpHandlers;
+using Yms.Web.Models;
 
 namespace Yms.Web.Controllers
 {
     public class OrderController : Controller
     {
         private readonly IYmsApiHttpHandler httpHandler;
-        private readonly Guid userId;
+        private readonly IClaims claims;
 
-        public OrderController(IYmsApiHttpHandler httpHandler, IHttpContextAccessor httpContextAccessor)
+        public OrderController(IYmsApiHttpHandler httpHandler, IClaims claims)
         {
             this.httpHandler = httpHandler;
-            try
-            {
-                userId = Guid.Parse(httpContextAccessor.HttpContext.User.Claims.First(i => i.Type == ClaimTypes.NameIdentifier).Value);
-            }
-            catch
-            {
-            }
+            this.claims = claims;
         }
 
-        public async Task<IActionResult> Cart()
+        public IActionResult Cart()
         {
-            var data = await httpHandler.GetProductForCart(userId);
-            if (data == null)
+            if (!claims.IsAuthenticated)
             {
                 return Redirect("/Account/Login");
             }
-            return View(data);
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetCartItems()
+        {
+            var data = await httpHandler.GetProductForCart(claims.Session.Id);
+            return Json(data);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateCart([FromBody]UpdateCartViewModel model)
+        {
+            var result = await httpHandler.UpdateCart(model.ProductId, model.Amount);
+            return Json(result);
         }
 
         public async Task<IActionResult> AddToCart(Guid productId)

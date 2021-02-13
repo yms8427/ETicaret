@@ -1,14 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
+using System.Net.Http.Headers;
+using Yms.Common.Contracts;
 using Yms.Web.HttpHandlers;
 using Yms.Web.Middlewares;
 
@@ -31,8 +29,8 @@ namespace Yms.Web
                 c.DefaultRequestHeaders.Add("X-Client-Type", "YMS-MVC-Client");
                 c.BaseAddress = new Uri(Configuration.GetValue<string>("ApiUrl"));
             });
+            services.AddScoped<IClaims, UserClaims>();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
-            services.AddHttpContextAccessor();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
         }
 
@@ -52,6 +50,8 @@ namespace Yms.Web
             app.UseMiddleware<GCMiddleware>();
             app.UseRouting();
             app.UseAuthentication();
+            app.UseMiddleware<CheckUserClaimsMiddleware>();
+            //app.UseMiddleware<RequestResponseLoggingMiddleware>();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

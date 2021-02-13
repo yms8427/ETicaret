@@ -13,5 +13,6 @@ namespace Yms.Services.Production.Abstractions
         IEnumerable<ProductDto> GetProductsByCategory(int count, Guid id);
         IEnumerable<ProductDto> GetProductsBySubCategory(int count, Guid id);
         IEnumerable<ProductDto> GetProductsBySupplier(int count, Guid id);
+        bool SetMainImage(Guid productId, Guid documentId);
     }
 }

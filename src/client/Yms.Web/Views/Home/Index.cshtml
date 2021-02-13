@@ -1,4 +1,10 @@
 ﻿@model Yms.Web.Models.MainViewModel
+@{ 
+    if (ViewData["Title"] == null)
+    {
+        ViewData["Title"] = "Alışveriş Dünyası";
+    }
+}
 <div class="modal fade" id="productView" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">

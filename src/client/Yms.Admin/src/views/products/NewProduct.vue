@@ -143,7 +143,16 @@
                 </div>
               </form>
             </div>
-            <div class="col-md-6 border rounded"><h1>Image Upload</h1></div>
+            <div class="col-md-6 border rounded py-3">
+              <div class="form-group row">
+                  <label class="col-md-3 col-form-label" for="SubCatgory"
+                    >Alt Kategori</label>
+                  <div class="col-md-9">
+                    <input type="file" ref="productPhoto" v-on:change="handleFileUpload()"/>
+                  </div>
+                </div>
+                <button class="btn btn-primary" type="submit" @click="upload">Yükle</button>
+            </div>
           </div>
         </div>
         <div class="card-footer col-md-6">
@@ -184,6 +193,7 @@ export default {
         subcategoryId: "",
         supplierId: "",
       },
+      photo: null,
 
       successId: null,
       defaultCategory: false,
@@ -200,14 +210,13 @@ export default {
       LoadSubCategories(self, e.target.value);
     },
     AddNewProduct() {
-      var self = this;
       var data = {};
       Object.assign(data, this.NewProduct);
       data.price = Number(data.price);
       data.stock = Number(data.stock);
 
       ajax.post("api/production/home/add-new", data, (data) => {
-        self.successId = data;
+        this.successId = data;
       });
     },
     RefreshAll() {
@@ -219,6 +228,17 @@ export default {
       this.successId = null;
       this.defaultCategory = true;
     },
+    handleFileUpload() {
+      this.photo = this.$refs.productPhoto.files[0];
+    },
+    upload() {
+      var fd = new FormData();
+      fd.append("productId", this.successId);
+      fd.append("content", this.photo);
+      ajax.postFile("api/production/home/upload", fd, d => {
+        console.log(d);
+      })
+    }
   },
 };
 function LoadCategories(self) {

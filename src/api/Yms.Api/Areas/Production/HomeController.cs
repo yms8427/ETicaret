@@ -2,7 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using System.Text;
 using Yms.Contracts.Production;
+using Yms.Services.Common.Abstractions;
 using Yms.Services.Production.Abstractions;
 
 namespace Yms.Api.Areas.Production
@@ -14,15 +18,24 @@ namespace Yms.Api.Areas.Production
     public class HomeController : ControllerBase
     {
         private readonly IProductService service;
+        private readonly IDocumentService documentService;
 
-        public HomeController(IProductService service)
+        public HomeController(IProductService service, IDocumentService documentService)
         {
             this.service = service;
+            this.documentService = documentService;
         }
         [HttpPost("add-new")]
-        public Guid AddPoduct(NewProductDto data)
+        public Guid AddProduct(NewProductDto data)
         {
             return service.AddNewProduct(data);
+        }
+
+        [HttpPost("upload")]
+        public bool Upload([FromForm]UploadFileDto data)
+        {
+            var id = documentService.UploadFile(data.Content.OpenReadStream(), data.Content.FileName);
+            return service.SetMainImage(data.ProductId, id);
         }
 
         [HttpGet("list")]

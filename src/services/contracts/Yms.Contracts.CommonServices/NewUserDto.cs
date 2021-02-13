@@ -9,7 +9,7 @@ namespace Yms.Contracts.CommonServices
         public string UserName { get; set; }
         public string Mail { get; set; }
         public string Phone { get; set; }
-        public UserType type { get; set; }
+        public UserType Type { get; set; }
 
     }
 }

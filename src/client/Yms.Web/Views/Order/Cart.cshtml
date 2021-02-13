@@ -1,7 +1,7 @@
-﻿@model Yms.Web.Models.CartMainViewModel
+﻿@{
+    ViewData["Title"] = "Sepetim";
+}
 <div class="page-holder">
-
-    <!--  Modal -->
     <div class="modal fade" id="productView" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -60,12 +60,12 @@
                 </div>
             </div>
         </section>
-        <section class="py-5">
+        <section class="py-5" id="cart">
             <h2 class="h5 text-uppercase mb-4">Alışveriş Sepeti</h2>
             <div class="row">
                 <div class="col-lg-8 mb-4 mb-lg-0">
                     <!-- CART TABLE-->
-                    <div class="table-responsive mb-4">
+                    <div class="table-responsive mb-4" v-if="products.length > 0">
                         <table class="table">
                             <thead class="bg-light">
                                 <tr>
@@ -77,38 +77,38 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var m in @Model.ProductsOfCart)
-
-                                {
-                                    <tr>
-                                        <th class="pl-0 border-0" scope="row">
-                                            <div class="media align-items-center">
-                                                <a class="reset-anchor d-block animsition-link" href="detail.html"><img src="@Url.Action("Get", "Image", new { id= m.ImageId })" alt="..." width="70" /></a>
-                                                <div class="media-body ml-3"><strong class="h6"><a class="reset-anchor animsition-link" href="detail.html">@m.ProductName</a></strong></div>
+                                <tr v-for="m in products">
+                                    <th class="pl-0 border-0" scope="row">
+                                        <div class="media align-items-center">
+                                            <a class="reset-anchor d-block animsition-link" href="detail.html"><img :src="getImageUrl(m.imageId)" :alt="m.productName" width="70" /></a>
+                                            <div class="media-body ml-3"><strong class="h6"><a class="reset-anchor animsition-link" href="detail.html">{{m.productName}}</a></strong></div>
+                                        </div>
+                                    </th>
+                                    <td class="align-middle border-0">
+                                        <p class="mb-0 small">{{m.price}} ₺</p>
+                                    </td>
+                                    <td class="align-middle border-0">
+                                        <div class="border d-flex align-items-center justify-content-between px-3">
+                                            <span class="small text-uppercase text-gray headings-font-family">Miktar</span>
+                                            <div class="quantity">
+                                                <button class="dec-btn p-0" @@click="decrease(m)"><i class="fas fa-caret-left"></i></button>
+                                                <input class="form-control form-control-sm border-0 shadow-0 p-0" type="text" :value=m.amount />
+                                                <button class="inc-btn p-0" @@click="increase(m)"><i class="fas fa-caret-right"></i></button>
                                             </div>
-                                        </th>
-                                        <td class="align-middle border-0">
-                                            <p class="mb-0 small">@m.Price ₺</p>
-                                        </td>
-                                        <td class="align-middle border-0">
-                                            <div class="border d-flex align-items-center justify-content-between px-3">
-                                                <span class="small text-uppercase text-gray headings-font-family">Miktar</span>
-                                                <div class="quantity">
-                                                    <button class="dec-btn p-0"><i class="fas fa-caret-left"></i></button>
-                                                    <input class="form-control form-control-sm border-0 shadow-0 p-0" type="text" value=@m.Amount />
-                                                    <button class="inc-btn p-0"><i class="fas fa-caret-right"></i></button>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="align-middle border-0">
-                                            <p class="mb-0 small">@m.SubTotal ₺</p>
-                                        </td>
+                                        </div>
+                                    </td>
+                                    <td class="align-middle border-0">
+                                        <p class="mb-0 small">{{m.subTotal}} ₺</p>
+                                    </td>
 
-                                        <td class="align-middle border-0"><a class="reset-anchor" href="#"><i class="fas fa-trash-alt small text-muted"></i></a></td>
-                                    </tr>
-                                }
+                                    <td class="align-middle border-0"><button class="btn reset-anchor" @@click="remove(m.productId)"><i class="fas fa-trash-alt small text-muted"></i></button></td>
+                                </tr>
                             </tbody>
                         </table>
+                    </div>
+
+                    <div v-else>
+                        Sepetiniz boş
                     </div>
                     <!-- CART NAV-->
                     <div class="bg-light px-4 py-3">
@@ -124,9 +124,9 @@
                         <div class="card-body">
                             <h5 class="text-uppercase mb-4">Sepet Toplamı</h5>
                             <ul class="list-unstyled mb-0">
-                                <li class="d-flex align-items-center justify-content-between"><strong class="text-uppercase small font-weight-bold">Alt Toplam</strong><span class="text-muted small">@Model.Total ₺</span></li>
+                                <li class="d-flex align-items-center justify-content-between"><strong class="text-uppercase small font-weight-bold">Alt Toplam</strong><span class="text-muted small">{{total}} ₺</span></li>
                                 <li class="border-bottom my-2"></li>
-                                <li class="d-flex align-items-center justify-content-between mb-4"><strong class="text-uppercase small font-weight-bold">Toplam</strong><span>@Model.Total ₺</span></li>
+                                <li class="d-flex align-items-center justify-content-between mb-4"><strong class="text-uppercase small font-weight-bold">Toplam</strong><span>{{total}} ₺</span></li>
                                 <li>
                                     <form action="#">
                                         <div class="form-group mb-0">
@@ -142,39 +142,11 @@
             </div>
         </section>
     </div>
-
-    <!-- JavaScript files-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="vendor/lightbox2/js/lightbox.min.js"></script>
-    <script src="vendor/nouislider/nouislider.min.js"></script>
-    <script src="vendor/bootstrap-select/js/bootstrap-select.min.js"></script>
-    <script src="vendor/owl.carousel2/owl.carousel.min.js"></script>
-    <script src="vendor/owl.carousel2.thumbs/owl.carousel2.thumbs.min.js"></script>
-    <script src="js/front.js"></script>
-    <script>
-        // ------------------------------------------------------- //
-        //   Inject SVG Sprite -
-        //   see more here
-        //   https://css-tricks.com/ajaxing-svg-sprite/
-        // ------------------------------------------------------ //
-        function injectSvgSprite(path) {
-
-            var ajax = new XMLHttpRequest();
-            ajax.open("GET", path, true);
-            ajax.send();
-            ajax.onload = function (e) {
-                var div = document.createElement("div");
-                div.className = 'd-none';
-                div.innerHTML = ajax.responseText;
-                document.body.insertBefore(div, document.body.childNodes[0]);
-            }
-        }
-        // this is set to BootstrapTemple website as you cannot
-        // inject local SVG sprite (using only 'icons/orion-svg-sprite.svg' path)
-        // while using file:// protocol
-        // pls don't forget to change to your domain :)
-        injectSvgSprite('https://bootstraptemple.com/files/icons/orion-svg-sprite.svg');</script>
-    <!-- FontAwesome CSS - loading as last, so it doesn't block rendering-->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 </div>
+
+@section script{
+    <script>
+        var imageUrl = '@Url.Action("Get", "Image", new { id = "_id_" })';
+    </script>
+    <script src="~/js/pages/cart.js"></script>
+}

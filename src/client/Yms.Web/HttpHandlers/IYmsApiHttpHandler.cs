@@ -23,5 +23,6 @@ namespace Yms.Web.HttpHandlers
         Task<string> GetSubCategoryNameById(Guid categoryId);
         Task<string> GetSupplierNameById(Guid supplierId);
         Task<string> GetDocumentNameById(Guid id);
+        Task<bool> UpdateCart(Guid productId, int amount);
     }
 }
