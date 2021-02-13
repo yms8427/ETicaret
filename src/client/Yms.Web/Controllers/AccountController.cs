@@ -32,12 +32,17 @@ namespace Yms.Web.Controllers
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             var result = await httpHandler.Authenticate(model.UserName, model.Password);
+            if (result == null)
+            {
+                SetAuthenticationError();
+                return View();
+            }
             var claim = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, result.Id.ToString()),
                 new Claim(ClaimTypes.Name, result.UserName),
                 new Claim(ClaimTypes.GivenName, result.DisplayName),
-                new Claim("JwtToken", result.Token)
+                new Claim(Constants.JwtTokenName, result.Token)
             };
 
             var claimsIdentity = new ClaimsIdentity(claim, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -77,6 +82,12 @@ namespace Yms.Web.Controllers
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return Redirect("/");
+        }
+
+        private void SetAuthenticationError()
+        {
+            ViewBag.HasError = true;
+            ViewBag.ErrorMessage = "Kullanıcı adı veya şifre yanlış";
         }
     }
 }

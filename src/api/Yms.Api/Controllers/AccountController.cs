@@ -46,10 +46,9 @@ namespace Yms.Api.Controllers
                 };
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var token = tokenHandler.CreateToken(tokenDescriptor);
-                string jwtToken = tokenHandler.WriteToken(token);
                 var result = new DetailedSessionInformation
                 {
-                    Token = jwtToken,
+                    Token = tokenHandler.WriteToken(token),
                     Id = user.Id,
                     DisplayName = user.DisplayName,
                     UserName = user.UserName

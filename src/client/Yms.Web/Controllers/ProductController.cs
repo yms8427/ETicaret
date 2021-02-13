@@ -32,6 +32,8 @@ namespace Yms.Web.Controllers
                 Title = categoryName
             };
 
+            ViewData["Title"] = $"{categoryName} Ürünleri";
+
             return View("/Views/Home/Index.cshtml", vm);
         }
         public async Task<IActionResult> SubCategory(string Id)
@@ -49,6 +51,8 @@ namespace Yms.Web.Controllers
                 Title = category
             };
 
+            ViewData["Title"] = $"{category} Ürünleri";
+
             return View("/Views/Home/Index.cshtml", vm);
         }
         public async Task<IActionResult> Supplier(string Id)
@@ -65,6 +69,8 @@ namespace Yms.Web.Controllers
                 Products = HomePageProductViewModel.GetFromDto(products).ToList(),
                 Title = supplier
             };
+
+            ViewData["Title"] = $"{supplier} Ürünleri";
 
             return View("/Views/Home/Index.cshtml", vm);
         }

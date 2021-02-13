@@ -18,11 +18,11 @@ namespace Yms.Web.HttpHandlers
         private readonly HttpClient httpClient;
         private readonly string token;
 
-        public YmsApiHttpHandler(HttpClient httpClient, IHttpContextAccessor httpContextAccessor)
+        public YmsApiHttpHandler(HttpClient httpClient, IClaims claims)
         {
-            if (httpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
+            if (claims.IsAuthenticated)
             {
-                this.token = httpContextAccessor.HttpContext.User.Claims.First(i => i.Type == "JwtToken").Value;
+                this.token = claims.Session.Extras[Constants.JwtTokenName].ToString();
             }
             
             this.httpClient = httpClient;
@@ -117,8 +117,11 @@ namespace Yms.Web.HttpHandlers
             var loginInfo = JsonConvert.SerializeObject(new { username = userName, password = password });
             var content = new StringContent(loginInfo, Encoding.UTF8, "application/json");
             var response = await httpClient.PostAsync($"api/account/login", content);
-            response.EnsureSuccessStatusCode();
-            return JsonConvert.DeserializeObject<DetailedSessionInformation>(await response.Content.ReadAsStringAsync());
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                return JsonConvert.DeserializeObject<DetailedSessionInformation>(await response.Content.ReadAsStringAsync());
+            }
+            return null;
         }
 
         public async Task<bool> Register(RegisterViewModel data)

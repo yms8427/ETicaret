@@ -1,5 +1,5 @@
 ﻿@model Yms.Web.Models.LoginViewModel
-@{ 
+@{
     Layout = null;
 }
 <html>
@@ -23,6 +23,10 @@
                             </div>
                             <p class="login-card-description">Giriş Yap</p>
                             <form method="post" action="@Url.Action("Login", "Account")">
+                                @if (ViewBag.HasError != null && ViewBag.HasError)
+                                {
+                                    <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+                                }
                                 <div class="form-group">
                                     <input type="text" class="form-control" placeholder="Kullanıcı Adı / E-Posta" asp-for="UserName" autocomplete="off">
                                 </div>
@@ -31,6 +35,7 @@
                                 </div>
                                 <input name="login" id="login" class="btn btn-block login-btn mb-4" type="submit" value="Giriş Yap">
                             </form>
+
                             <a href="#!" class="forgot-password-link">Parolamı Unuttum?</a>
                             <p class="login-card-footer-text">Hesabın Yok Mu? <a asp-controller="Account" asp-action="Register" class="text-reset">Kayıt Ol</a></p>
                             <nav class="login-card-footer-nav">

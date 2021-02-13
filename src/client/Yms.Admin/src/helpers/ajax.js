@@ -4,7 +4,7 @@ import session from "./session";
 function getHeader() {
   let result = { Accept: "application/json", "X-Client-Type": "admin" };
   if (session.isAuthenticated()) {
-    result.authorization = "Bearer " + session.getSession();
+    result.authorization = "Bearer " + session.getSession().token;
   }
   return result;
 }
