@@ -15,6 +15,8 @@ namespace Yms.Web.HttpHandlers
         Task<List<ProductDto>> GetProductsBySubCategory(int limit, Guid id);
         Task<List<ProductDto>> GetProductsBySupplier(int limit, Guid id);
         Task<bool> AddToCart(Guid productId, byte count);
+        Task<bool> Register(RegisterViewModel data);
+        Task<CartMainViewModel> GetProductForCart(Guid userId);
         Task<List<SupplierDto>> GetSuppliers();
         Task<string> GetCategoryNameById(Guid categoryId);
         Task<DetailedSessionInformation> Authenticate(string userName, string password);

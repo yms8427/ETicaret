@@ -61,7 +61,7 @@ namespace Yms.Services.Common.Concretes
 
         public bool Register(NewUserDto newUser)
         {
-            Enum.TryParse(newUser.type, out UserType newType);
+            //Enum.TryParse(newUser.type, out UserType newType);
             var hash = ComputeHash(newUser.Password);
             var _new = new User
             {
@@ -75,7 +75,7 @@ namespace Yms.Services.Common.Concretes
                 IsDeleted = false,
                 MailAddress = newUser.Mail,
                 Password = hash,
-                Type = newType,
+                Type = newUser.type,
                 Updated = DateTime.Now,
                 UserName = newUser.UserName,
                 VerificationCode = null

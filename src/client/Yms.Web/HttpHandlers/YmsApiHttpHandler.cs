@@ -120,5 +120,44 @@ namespace Yms.Web.HttpHandlers
             response.EnsureSuccessStatusCode();
             return JsonConvert.DeserializeObject<DetailedSessionInformation>(await response.Content.ReadAsStringAsync());
         }
+
+        public async Task<bool> Register(RegisterViewModel data)
+        {
+            var content = JsonConvert.SerializeObject(data);
+            var stringContent = new StringContent(content, Encoding.UTF8, "application/json");
+            var response = await httpClient.PostAsync($"api/account/register", stringContent);
+            response.EnsureSuccessStatusCode();
+            return JsonConvert.DeserializeObject<bool>(await response.Content.ReadAsStringAsync());
+        }
+
+        public async Task<CartMainViewModel> GetProductForCart(Guid userId)
+        {
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = await httpClient.GetAsync($"api/sales/cart/get-products/{userId}");
+            switch (response.StatusCode)
+            {
+                case System.Net.HttpStatusCode.Unauthorized:
+                case System.Net.HttpStatusCode.BadRequest:
+                    return null;
+                case System.Net.HttpStatusCode.OK:
+                    var products = JsonConvert.DeserializeObject<IEnumerable<CartViewModel>>(await response.Content.ReadAsStringAsync()).ToList();
+                    return new CartMainViewModel() { 
+                        ProductsOfCart = products,
+                        Total = CalculateTotalPrice(products)
+                    };
+            }
+            return null;
+
+        }
+
+        private decimal CalculateTotalPrice(List<CartViewModel> products)
+        {
+            decimal total = 0;
+            foreach (var p in products)
+            {
+                total += p.SubTotal;
+            }
+            return total;
+        }
     }
 }
