@@ -5,6 +5,7 @@
         public AuthenticationConfiguration Authentication { get; set; }
         public DatabaseConfiguration Database { get; set; }
         public MailConfiguration Mail { get; set; }
+        public string HostUrl { get; set; }
 
         public class AuthenticationConfiguration
         {

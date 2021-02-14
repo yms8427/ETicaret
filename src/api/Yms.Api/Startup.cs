@@ -55,6 +55,7 @@ namespace Yms.Api
             {
                 c.OperationFilter<AddClientTypeHeaderParameter>();
             });
+            services.AddMemoryCache();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

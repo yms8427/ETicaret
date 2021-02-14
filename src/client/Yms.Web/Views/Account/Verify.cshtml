@@ -1,0 +1,54 @@
+﻿@model Yms.Web.Models.VerifyViewModel
+@{
+    Layout = null;
+}
+<html>
+<head>
+    <title>Üyelik Onayı - YM'S</title>
+    <link href="~/css/login/login.css" rel="stylesheet" />
+    <link href="~/vendor/bootstrap/css/bootstrap.css" rel="stylesheet" />
+</head>
+<body>
+    <main class="d-flex align-items-center min-vh-100 py-3 py-md-0">
+        <div class="container">
+            <div class="card login-card">
+                <div class="row no-gutters">
+                    <div class="col-md-5">
+                        <img src="/img/login.jpg" alt="login" class="login-card-img">
+                    </div>
+                    <div class="col-md-7">
+                        <div class="card-body">
+                            <div class="brand-wrapper">
+                                <img src="/img/logo.svg" alt="logo" class="logo">
+                            </div>
+                            @if (Model.CodeExists)
+                            {
+                                <p class="login-card-description">Şifre Belirle</p>
+                                <form method="post" action="@Url.Action("SetPassword", "Account")">
+                                    <input type="hidden" asp-for="Code" />
+                                    <div class="form-group">
+                                        <input type="password" class="form-control" placeholder="Şifre" asp-for="Password" autocomplete="off">
+                                    </div>
+                                    <div class="form-group mb-4">
+                                        <input type="password" class="form-control" placeholder="Şifre Tekrar" asp-for="PasswordRepeat" autocomplete="off">
+                                    </div>
+                                    @if (Model.InvalidPassword)
+                                    {
+                                        <div class="alert alert-warning">Parolalar uyuşmuyor</div>
+
+                                    }
+                                    <input name="login" id="login" class="btn btn-block login-btn mb-4" type="submit" value="Şifreyi Kaydet">
+                                </form>
+                            }
+                            else
+                            {
+                                <div class="alert alert-danger">Doğrulama kodunuz yanlış veya hesabınız zaten etkinleştirildi</div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

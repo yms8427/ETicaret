@@ -162,5 +162,18 @@ namespace Yms.Web.HttpHandlers
             response.EnsureSuccessStatusCode();
             return true;
         }
+
+        public async Task<bool> CheckCodeIfExists(string code)
+        {
+            var response = await httpClient.GetAsync($"api/account/check/{code}");
+            response.EnsureSuccessStatusCode();
+            return JsonConvert.DeserializeObject<bool>(await response.Content.ReadAsStringAsync());
+        }
+
+        public async Task SetPassword(string password, string code)
+        {
+            var response = await httpClient.PostAsync($"api/account/set/{password}/{code}", null);
+            response.EnsureSuccessStatusCode();
+        }
     }
 }

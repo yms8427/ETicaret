@@ -13,9 +13,8 @@ namespace Yms.Services.Common.Concretes
 {
     class UserService : IUserService
     {
-        private readonly DbSet<User> users;
         private readonly DbContext context;
-
+        private readonly DbSet<User> users;
         public UserService(DbContext context)
         {
             users = context.Set<User>();
@@ -38,17 +37,9 @@ namespace Yms.Services.Common.Concretes
             };
         }
 
-        private static string ComputeHash(string text)
+        public bool CheckIfCodeExists(string code)
         {
-            var prefix = "_74YudhT63Hp0f!";
-            var crypt = new SHA256Managed();
-            byte[] crypto = crypt.ComputeHash(Encoding.ASCII.GetBytes(prefix + text));
-            var builder = new StringBuilder();
-            foreach (byte theByte in crypto)
-            {
-                builder.Append(theByte.ToString("x2"));
-            }
-            return builder.ToString();
+            return users.Any(a => a.VerificationCode == code);
         }
 
         public IEnumerable<UserDto> GetUsers()
@@ -86,6 +77,31 @@ namespace Yms.Services.Common.Concretes
             users.Add(_new);
             var isSuccess = context.SaveChanges() > 0;
             return (isSuccess, _new.Id, verificationCode);
+        }
+
+        public void SetPassword(string code, string password)
+        {
+            var user = users.FirstOrDefault(f => f.VerificationCode == code);
+            if (user != null)
+            {
+                user.Password = ComputeHash(password);
+                user.VerificationCode = null;
+                user.IsActive = true;
+                context.SaveChanges();
+            }
+        }
+
+        private static string ComputeHash(string text)
+        {
+            var prefix = "_74YudhT63Hp0f!";
+            var crypt = new SHA256Managed();
+            byte[] crypto = crypt.ComputeHash(Encoding.ASCII.GetBytes(prefix + text));
+            var builder = new StringBuilder();
+            foreach (byte theByte in crypto)
+            {
+                builder.Append(theByte.ToString("x2"));
+            }
+            return builder.ToString();
         }
     }
 }
