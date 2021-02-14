@@ -1,8 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Yms.Common.Contracts;
 using Yms.Web.HttpHandlers;
@@ -38,7 +35,7 @@ namespace Yms.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateCart([FromBody]UpdateCartViewModel model)
+        public async Task<IActionResult> UpdateCart([FromBody] UpdateCartViewModel model)
         {
             var result = await httpHandler.UpdateCart(model.ProductId, model.Amount);
             return Json(result);

@@ -59,7 +59,7 @@ namespace Yms.Web.Controllers
             return Redirect("/");
         }
         [HttpPost]
-        public async Task<IActionResult> Register(RegisterViewModel model)
+        public async Task<IActionResult> Register([FromForm]RegisterViewModel model)
         {
             var result = await httpHandler.Register(model);
             if (result)
@@ -82,6 +82,30 @@ namespace Yms.Web.Controllers
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return Redirect("/");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Verify([FromQuery]string code)
+        {
+            var hasVerificationCode = await httpHandler.CheckCodeIfExists(code);
+            var vm = new VerifyViewModel
+            {
+                CodeExists = hasVerificationCode,
+                Code = code
+            };
+            return View(vm);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SetPassword(NewPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                await httpHandler.SetPassword(model.Password, model.Code);
+                return Redirect("/Account/Login");
+            }
+            var vm = new VerifyViewModel() { CodeExists = true, InvalidPassword = true }; 
+            return View("Verify", vm);
         }
 
         private void SetAuthenticationError()

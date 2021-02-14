@@ -119,7 +119,9 @@ namespace Yms.Web.HttpHandlers
             var response = await httpClient.PostAsync($"api/account/login", content);
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                return JsonConvert.DeserializeObject<DetailedSessionInformation>(await response.Content.ReadAsStringAsync());
+                var result = await response.Content.ReadAsStringAsync();
+                //TODO : IsActive kontrolü
+                return JsonConvert.DeserializeObject<DetailedSessionInformation>(result);
             }
             return null;
         }
@@ -159,6 +161,19 @@ namespace Yms.Web.HttpHandlers
             var response = await httpClient.PostAsync($"api/sales/cart/update-cart?productId={productId}&amount={amount}", null);
             response.EnsureSuccessStatusCode();
             return true;
+        }
+
+        public async Task<bool> CheckCodeIfExists(string code)
+        {
+            var response = await httpClient.GetAsync($"api/account/check/{code}");
+            response.EnsureSuccessStatusCode();
+            return JsonConvert.DeserializeObject<bool>(await response.Content.ReadAsStringAsync());
+        }
+
+        public async Task SetPassword(string password, string code)
+        {
+            var response = await httpClient.PostAsync($"api/account/set/{password}/{code}", null);
+            response.EnsureSuccessStatusCode();
         }
     }
 }

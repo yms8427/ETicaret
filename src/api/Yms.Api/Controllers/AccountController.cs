@@ -18,12 +18,16 @@ namespace Yms.Api.Controllers
     public class AccountController : ControllerBase
     {
         private readonly IUserService service;
+        private readonly IMailService mailService;
         private readonly string signingKey;
+        private readonly string hostUrl;
 
-        public AccountController(IUserService service, IOptions<Settings> options)
+        public AccountController(IUserService service, IMailService mailService, IOptions<Settings> options)
         {
             this.service = service;
+            this.mailService = mailService;
             signingKey = options.Value.Authentication.Secret;
+            hostUrl = options.Value.HostUrl;
         }
 
         [HttpPost("login")]
@@ -64,11 +68,29 @@ namespace Yms.Api.Controllers
             return service.GetUsers();
         }
 
+        [HttpGet("check/{code}")]
+        public bool CheckCode(string code)
+        {
+            return service.CheckIfCodeExists(code);
+        }
+
+        [HttpPost("set/{password}/{code}")]
+        public void SetPassword(string code, string password)
+        {
+            service.SetPassword(code, password);
+        }
+
         [HttpPost("register")]
         public IActionResult Register([FromBody] NewUserDto newUser)
         {
-            if (service.Register(newUser))
+            var (saved, userId, verificationCode) = service.Register(newUser);
+            if (saved)
             {
+                var content = new StringBuilder("<html><body>");
+                content.Append("<h1>Hoşgeldiniz. Üyeliğiniz onaylandı.</h1>");
+                content.Append($"<p>Üyeliğinizin aktifleştirilmesi ve parolanızı belirlemek için <a href=\"{hostUrl}/account/verify?code={verificationCode}\">buraya</a> tıklayınız</p>");
+                content.Append("</body></html>");
+                mailService.SendVerificationMail(userId, content.ToString());
                 return Ok(true);
             }
             return BadRequest(false);

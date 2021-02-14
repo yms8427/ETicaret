@@ -13,9 +13,8 @@ namespace Yms.Services.Common.Concretes
 {
     class UserService : IUserService
     {
-        private readonly DbSet<User> users;
         private readonly DbContext context;
-
+        private readonly DbSet<User> users;
         public UserService(DbContext context)
         {
             users = context.Set<User>();
@@ -26,6 +25,10 @@ namespace Yms.Services.Common.Concretes
         {
             var hash = ComputeHash(password);
             var user = users.Single(f => f.UserName == username && f.Password == hash);
+            if (!user.IsActive)
+            {
+                return null;
+            }
             return new UserInfoDto
             {
                 Id = user.Id,
@@ -34,17 +37,9 @@ namespace Yms.Services.Common.Concretes
             };
         }
 
-        private static string ComputeHash(string text)
+        public bool CheckIfCodeExists(string code)
         {
-            var prefix = "_74YudhT63Hp0f!";
-            var crypt = new SHA256Managed();
-            byte[] crypto = crypt.ComputeHash(Encoding.ASCII.GetBytes(prefix + text));
-            var builder = new StringBuilder();
-            foreach (byte theByte in crypto)
-            {
-                builder.Append(theByte.ToString("x2"));
-            }
-            return builder.ToString();
+            return users.Any(a => a.VerificationCode == code);
         }
 
         public IEnumerable<UserDto> GetUsers()
@@ -59,9 +54,9 @@ namespace Yms.Services.Common.Concretes
             }).ToList();
         }
 
-        public bool Register(NewUserDto newUser)
+        public (bool isSuccess, Guid userId, string code) Register(NewUserDto newUser)
         {
-            var hash = ComputeHash(newUser.Password);
+            var verificationCode = $"{Guid.NewGuid():N}{Guid.NewGuid().ToString("N")}".Substring(0, 39);
             var _new = new User
             {
                 Id = Guid.NewGuid(),
@@ -70,18 +65,43 @@ namespace Yms.Services.Common.Concretes
                 CreatedBy = Guid.Parse("00000000-0000-0000-0000-000000000001"),
                 UpdatedBy = Guid.Parse("00000000-0000-0000-0000-000000000001"),
                 DisplayName = newUser.DisplayName,
-                IsActive = true,
+                IsActive = false,
                 IsDeleted = false,
                 MailAddress = newUser.Mail,
-                Password = hash,
+                Password = "NEWUSER",
                 Type = newUser.Type,
                 Updated = DateTime.Now,
                 UserName = newUser.UserName,
-                VerificationCode = null
+                VerificationCode = verificationCode
             };
             users.Add(_new);
-            return context.SaveChanges() > 0;
+            var isSuccess = context.SaveChanges() > 0;
+            return (isSuccess, _new.Id, verificationCode);
+        }
 
+        public void SetPassword(string code, string password)
+        {
+            var user = users.FirstOrDefault(f => f.VerificationCode == code);
+            if (user != null)
+            {
+                user.Password = ComputeHash(password);
+                user.VerificationCode = null;
+                user.IsActive = true;
+                context.SaveChanges();
+            }
+        }
+
+        private static string ComputeHash(string text)
+        {
+            var prefix = "_74YudhT63Hp0f!";
+            var crypt = new SHA256Managed();
+            byte[] crypto = crypt.ComputeHash(Encoding.ASCII.GetBytes(prefix + text));
+            var builder = new StringBuilder();
+            foreach (byte theByte in crypto)
+            {
+                builder.Append(theByte.ToString("x2"));
+            }
+            return builder.ToString();
         }
     }
 }

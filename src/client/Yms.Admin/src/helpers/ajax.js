@@ -8,6 +8,7 @@ const CREATIONTYPE = {
 function getHeader(type) {
   let header = { "X-Client-Type": "admin" };
   if (type === CREATIONTYPE.JSON) {
+    header["Content-Type"] = "application/json";
     header["Accept"] = "application/json";
   } else if (type === CREATIONTYPE.FORM) {
     header["Content-Type"] = "multipart/form-data";
@@ -45,9 +46,11 @@ function post(url, data, callback) {
 }
 
 function postFile(url, data, callback) {
-  axios.post("https://localhost:5001/" + url, data, { headers: { "X-Client-Type": "admin", "Authorization": "Bearer " + session.getSession().token, "Content-Type" : "multipart/form-data" }})
-  // createAxios(CREATIONTYPE.FORM)
-  //   .post(url, data)
+  if (!(data instanceof FormData)) {
+    throw new Error("only 'FormData' is allowed in request data");
+  }
+  createAxios(CREATIONTYPE.FORM)
+    .post(url, data)
     .then((response) => {
       callback(response.data);
     })

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Caching.Memory;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Yms.Contracts.Production;
@@ -11,33 +12,12 @@ namespace Yms.Services.Production.Concretes
     public class SupplierService : ISupplierService
     {
         private readonly YmsDbContext context;
+        private readonly IMemoryCache memoryCache;
 
-        public SupplierService(YmsDbContext context)
+        public SupplierService(YmsDbContext context, IMemoryCache memoryCache)
         {
             this.context = context;
-        }
-
-        public string GetSupplierNameById(Guid id)
-        {
-            return context.Suppliers.FirstOrDefault(f => f.Id == id)?.Name;
-        }
-
-
-
-
-        public IEnumerable<SupplierDto> GetSuppliers()
-        {
-            return context.Suppliers.OrderByDescending(s => s.Created).Select(s => new SupplierDto
-            {
-                Id = s.Id,
-                Address = s.Address,
-                Mail = s.Mail,
-                Name = s.Name,
-                Phone = s.Phone,
-                TaxNumber = s.TaxNumber,
-                Vote = s.Vote,
-                VoteCount = s.VoteCount
-            }).ToList();
+            this.memoryCache = memoryCache;
         }
 
         public Guid AddNewSupplier(NewSupplierDto data)
@@ -65,6 +45,7 @@ namespace Yms.Services.Production.Concretes
             {
                 return s.Id;
             }
+            //TODO: Add to cache
             return Guid.Empty;
         }
 
@@ -81,6 +62,42 @@ namespace Yms.Services.Production.Concretes
                 Vote = s.Vote,
                 VoteCount = s.VoteCount
             }).FirstOrDefault();
+        }
+
+        public string GetSupplierNameById(Guid id)
+        {
+            return context.Suppliers.FirstOrDefault(f => f.Id == id)?.Name;
+        }
+
+        public IEnumerable<SupplierDto> GetSuppliers()
+        {
+            var hasSuppliers = memoryCache.TryGetValue<List<Supplier>>(nameof(Supplier), out var cachedSuppliers);
+            if (hasSuppliers)
+            {
+                return MapSuppliers(cachedSuppliers);
+            }
+            var suppliers = context.Suppliers.ToList();
+            var options = new MemoryCacheEntryOptions
+            {
+                AbsoluteExpiration = DateTime.Now.AddDays(1)
+            };
+            memoryCache.Set(nameof(Supplier), suppliers, options);
+            return MapSuppliers(suppliers);
+        }
+
+        private static List<SupplierDto> MapSuppliers(List<Supplier> cachedSuppliers)
+        {
+            return cachedSuppliers.OrderByDescending(s => s.Created).Select(s => new SupplierDto
+            {
+                Id = s.Id,
+                Address = s.Address,
+                Mail = s.Mail,
+                Name = s.Name,
+                Phone = s.Phone,
+                TaxNumber = s.TaxNumber,
+                Vote = s.Vote,
+                VoteCount = s.VoteCount
+            }).ToList();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Yms.Contracts.CommonServices;
 
 namespace Yms.Services.Common.Abstractions
@@ -9,8 +10,8 @@ namespace Yms.Services.Common.Abstractions
 
         IEnumerable<UserDto> GetUsers();
 
-        bool Register(NewUserDto newUser);
-
-
+        (bool isSuccess, Guid userId, string code) Register(NewUserDto newUser);
+        bool CheckIfCodeExists(string code);
+        void SetPassword(string code, string password);
     }
 }
