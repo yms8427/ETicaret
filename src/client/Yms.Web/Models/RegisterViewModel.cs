@@ -8,9 +8,6 @@ namespace Yms.Web.Models
         public string UserName { get; set; }
 
         [Required]
-        public string Password { get; set; }
-
-        [Required]
         public string DisplayName { get; set; }
 
         [Required]
@@ -20,6 +17,6 @@ namespace Yms.Web.Models
         public string Phone { get; set; }
 
         [Required]
-        public int type { get; } = 1;
+        public int Type { get; } = 1;
     }
 }

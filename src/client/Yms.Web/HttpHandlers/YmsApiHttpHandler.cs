@@ -119,7 +119,9 @@ namespace Yms.Web.HttpHandlers
             var response = await httpClient.PostAsync($"api/account/login", content);
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                return JsonConvert.DeserializeObject<DetailedSessionInformation>(await response.Content.ReadAsStringAsync());
+                var result = await response.Content.ReadAsStringAsync();
+                //TODO : IsActive kontrolü
+                return JsonConvert.DeserializeObject<DetailedSessionInformation>(result);
             }
             return null;
         }

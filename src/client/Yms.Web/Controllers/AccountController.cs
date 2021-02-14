@@ -59,7 +59,7 @@ namespace Yms.Web.Controllers
             return Redirect("/");
         }
         [HttpPost]
-        public async Task<IActionResult> Register(RegisterViewModel model)
+        public async Task<IActionResult> Register([FromForm]RegisterViewModel model)
         {
             var result = await httpHandler.Register(model);
             if (result)

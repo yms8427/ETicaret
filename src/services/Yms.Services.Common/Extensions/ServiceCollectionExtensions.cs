@@ -13,6 +13,7 @@ namespace Yms.Services.Common.Extensions
         {
             services.AddScoped<IDocumentService, DocumentService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IMailService, MailService>();
             return services;
         }
     }
