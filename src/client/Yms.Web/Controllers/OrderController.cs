@@ -41,6 +41,13 @@ namespace Yms.Web.Controllers
             return Json(result);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> RemoveFromCart(Guid id)
+        {
+            var result = await httpHandler.RemoveFromCart(id);
+            return Json(result);
+        }
+
         public async Task<IActionResult> AddToCart(Guid productId)
         {
             var result = await httpHandler.AddToCart(productId, 1);

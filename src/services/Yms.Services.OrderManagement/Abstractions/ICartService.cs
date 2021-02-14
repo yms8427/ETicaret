@@ -10,5 +10,6 @@ namespace Yms.Services.OrderManagement.Abstractions
         bool Add(Guid userId, Guid productId, byte count);
         IEnumerable<CartDto> GetProductByUserId(Guid id);
         bool UpdateCart(Guid userId, Guid productId, byte amount);
+        bool RemoveFromCart(Guid id);
     }
 }

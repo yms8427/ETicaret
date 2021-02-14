@@ -32,7 +32,7 @@ namespace Yms.Services.Common.Concretes
             var id = Guid.NewGuid();
             var path = $"ftp://localhost/img/{id}_{fileName}";
             var request = (FtpWebRequest)WebRequest.Create(path);
-            request.Credentials = new NetworkCredential("ftpuser", "123");
+            request.Credentials = new NetworkCredential("SERGEN", "sk05345802402");
             request.Method = WebRequestMethods.Ftp.UploadFile;
             request.UseBinary = true;
 

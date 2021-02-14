@@ -55,5 +55,13 @@ namespace Yms.Api.Areas.Sales
         {
             return service.UpdateCart(claims.Session.Id, productId, amount);
         }
+
+
+        [HttpPost("remove-from-cart/{id}")]
+
+        public bool RemoveFromCart(Guid id)
+        {
+            return service.RemoveFromCart(id);
+        }
     }
 }

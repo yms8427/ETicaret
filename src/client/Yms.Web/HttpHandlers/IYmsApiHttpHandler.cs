@@ -26,5 +26,6 @@ namespace Yms.Web.HttpHandlers
         Task<bool> UpdateCart(Guid productId, int amount);
         Task<bool> CheckCodeIfExists(string code);
         Task SetPassword(string password, string code);
+        Task<bool> RemoveFromCart(Guid id);
     }
 }

@@ -175,5 +175,13 @@ namespace Yms.Web.HttpHandlers
             var response = await httpClient.PostAsync($"api/account/set/{password}/{code}", null);
             response.EnsureSuccessStatusCode();
         }
+
+        public async Task<bool> RemoveFromCart(Guid id)
+        {
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = await httpClient.PostAsync($"api/sales/cart/remove-from-cart/{id}", null);
+            response.EnsureSuccessStatusCode();
+            return JsonConvert.DeserializeObject<bool>(await response.Content.ReadAsStringAsync());
+        }
     }
 }

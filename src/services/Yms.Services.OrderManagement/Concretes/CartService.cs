@@ -21,6 +21,15 @@ namespace Yms.Services.OrderManagement.Concretes
 
         public bool Add(Guid userId, Guid productId, byte count)
         {
+            
+            var cartItem = table.FirstOrDefault(p => p.ProductId == productId && !p.IsDeleted);
+            if (cartItem != null)
+            {
+                cartItem.Amount++;
+                context.SaveChanges();
+                return true;
+                
+            }
             table.Add(new Basket
             {
                 IsActive = true,
@@ -39,15 +48,28 @@ namespace Yms.Services.OrderManagement.Concretes
 
         public IEnumerable<CartDto> GetProductByUserId(Guid id)
         {
-            return  table.Include(i => i.Product).Where(p => p.UserId == id).Select(p => new CartDto
+            return table.Include(i => i.Product).Where(p => p.UserId == id && !p.IsDeleted).Select(p => new CartDto
             {
                 ProductId = p.ProductId,
                 Amount = p.Amount,
                 Price = p.Product.Price,
                 ProductName = p.Product.Name,
                 ImageId = p.Product.DocumentId,
-                
+                Id = p.Id
+
             }).ToList();
+        }
+
+        public bool RemoveFromCart(Guid id)
+         {
+            var cartItem = table.FirstOrDefault(f => f.Id == id);
+            if (cartItem != null)
+            {
+                cartItem.IsDeleted = true;
+                context.SaveChanges();
+                return true;
+            }
+            return false;
         }
 
         public bool UpdateCart(Guid userId, Guid productId, byte amount)
