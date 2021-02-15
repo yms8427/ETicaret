@@ -37,9 +37,9 @@ namespace Yms.Services.Common.Concretes
             };
         }
 
-        public bool CheckIfCodeExists(string code)
+        public bool CheckIfCodeAndUserExists(string code, Guid userId)
         {
-            return users.Any(a => a.VerificationCode == code);
+            return users.Any(a => a.VerificationCode == code && a.Id == userId);
         }
 
         public IEnumerable<UserDto> GetUsers()
@@ -62,7 +62,7 @@ namespace Yms.Services.Common.Concretes
                 Id = Guid.NewGuid(),
                 Created = DateTime.Now,
                 Phone = newUser.Phone,
-                CreatedBy = Guid.Parse("00000000-0000-0000-0000-000000000001"),
+                CreatedBy = Guid.Parse("00000000-0000-0000-0000-000000000001"), 
                 UpdatedBy = Guid.Parse("00000000-0000-0000-0000-000000000001"),
                 DisplayName = newUser.DisplayName,
                 IsActive = false,

@@ -163,9 +163,9 @@ namespace Yms.Web.HttpHandlers
             return true;
         }
 
-        public async Task<bool> CheckCodeIfExists(string code)
+        public async Task<bool> CheckCodeAndUserIfExists(string code, Guid userId)
         {
-            var response = await httpClient.GetAsync($"api/account/check/{code}");
+            var response = await httpClient.GetAsync($"api/account/check/{code}/{userId}");
             response.EnsureSuccessStatusCode();
             return JsonConvert.DeserializeObject<bool>(await response.Content.ReadAsStringAsync());
         }
@@ -182,6 +182,13 @@ namespace Yms.Web.HttpHandlers
             var response = await httpClient.PostAsync($"api/sales/cart/remove-from-cart/{id}", null);
             response.EnsureSuccessStatusCode();
             return JsonConvert.DeserializeObject<bool>(await response.Content.ReadAsStringAsync());
+        }
+
+        public async Task<DetailedProductDto> GetProductDetail(Guid id)
+        {
+            var response = await httpClient.GetAsync($"api/production/home/product-detail/{id}");
+            response.EnsureSuccessStatusCode();
+            return JsonConvert.DeserializeObject<DetailedProductDto>(await response.Content.ReadAsStringAsync());
         }
     }
 }

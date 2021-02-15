@@ -66,9 +66,9 @@ namespace Yms.Api.Areas.Production
             return service.GetProductsBySupplier(count, id);
         }
 
-        [HttpGet("product-detail")]
+        [HttpGet("product-detail/{id}")]
         [AllowAnonymous]
-        public ProductDto GetProduct([FromQuery] Guid id)
+        public ProductDto GetProduct(Guid id)
         {
             return service.GetProduct(id);
         }

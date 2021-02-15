@@ -24,8 +24,9 @@ namespace Yms.Web.HttpHandlers
         Task<string> GetSupplierNameById(Guid supplierId);
         Task<string> GetDocumentNameById(Guid id);
         Task<bool> UpdateCart(Guid productId, int amount);
-        Task<bool> CheckCodeIfExists(string code);
+        Task<bool> CheckCodeAndUserIfExists(string code, Guid userId);
         Task SetPassword(string password, string code);
         Task<bool> RemoveFromCart(Guid id);
+        Task<DetailedProductDto> GetProductDetail(Guid id);
     }
 }

@@ -18,7 +18,6 @@ namespace Yms.Data.Entities
         public Guid? DocumentId { get; set; }
         public Guid SupplierId { get; set; }
         public Guid SubCategoryId { get; set; }
-
         public Supplier Supplier { get; set; }
         public SubCategory SubCategory { get; set; }
         public Document Document { get; set; }

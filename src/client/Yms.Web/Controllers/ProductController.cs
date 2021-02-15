@@ -74,5 +74,13 @@ namespace Yms.Web.Controllers
 
             return View("/Views/Home/Index.cshtml", vm);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetProductDetail(string Id)
+        {
+            var productId = Guid.Parse(Id);
+            var detailedProduct = await httpHandler.GetProductDetail(productId);
+            return Json(detailedProduct);
+        }
     }
 }

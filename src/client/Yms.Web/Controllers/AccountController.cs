@@ -25,7 +25,8 @@ namespace Yms.Web.Controllers
         }
         public IActionResult Register()
         {
-            return View();
+            var rmv = new RegisterMainViewModel() { IsCodeSend = false };
+            return View(rmv);
         }
 
         [HttpPost]
@@ -64,7 +65,8 @@ namespace Yms.Web.Controllers
             var result = await httpHandler.Register(model);
             if (result)
             {
-                return Redirect("/Account/Login");
+                var rmv = new RegisterMainViewModel() { IsCodeSend = result };
+                return View(rmv);
             }
             else
             {
@@ -85,9 +87,9 @@ namespace Yms.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Verify([FromQuery]string code)
+        public async Task<IActionResult> Verify([FromQuery]string code, [FromQuery] Guid userId)
         {
-            var hasVerificationCode = await httpHandler.CheckCodeIfExists(code);
+            var hasVerificationCode = await httpHandler.CheckCodeAndUserIfExists(code, userId); 
             var vm = new VerifyViewModel
             {
                 CodeExists = hasVerificationCode,

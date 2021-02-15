@@ -11,7 +11,7 @@ namespace Yms.Services.Common.Abstractions
         IEnumerable<UserDto> GetUsers();
 
         (bool isSuccess, Guid userId, string code) Register(NewUserDto newUser);
-        bool CheckIfCodeExists(string code);
+        bool CheckIfCodeAndUserExists(string code, Guid userId);
         void SetPassword(string code, string password);
     }
 }
