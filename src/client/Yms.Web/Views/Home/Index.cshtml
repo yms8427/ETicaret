@@ -36,6 +36,7 @@
 @section script {
     <script>
         var imageUrl = '@Url.Action("Get", "Image", new { id = "_id_" })';
+        var addToCartUrl = '@Html.Raw(Url.Action("AddToCart", "Order", new { productId = "_id_", count = "1"}))';
     </script>
 
     <script src="~/js/pages/productlist.js"></script>

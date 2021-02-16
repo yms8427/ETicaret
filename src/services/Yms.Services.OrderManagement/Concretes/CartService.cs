@@ -25,7 +25,7 @@ namespace Yms.Services.OrderManagement.Concretes
             var cartItem = table.FirstOrDefault(p => p.ProductId == productId && !p.IsDeleted);
             if (cartItem != null)
             {
-                cartItem.Amount++;
+                cartItem.Amount += count;
                 context.SaveChanges();
                 return true;
                 
@@ -74,7 +74,7 @@ namespace Yms.Services.OrderManagement.Concretes
 
         public bool UpdateCart(Guid userId, Guid productId, byte amount)
         {
-            var cartItem = table.FirstOrDefault(f => f.UserId == userId && f.ProductId == productId);
+            var cartItem = table.FirstOrDefault(f => f.UserId == userId && f.ProductId == productId && !f.IsDeleted);
             if (cartItem != null)
             {
                 cartItem.Amount = amount;
