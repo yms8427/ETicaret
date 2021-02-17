@@ -28,5 +28,6 @@ namespace Yms.Web.HttpHandlers
         Task SetPassword(string password, string code);
         Task<bool> RemoveFromCart(Guid id);
         Task<DetailedProductDto> GetProductDetail(Guid id);
+        Task<byte> GetCartAmount(Guid id);
     }
 }

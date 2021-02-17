@@ -22,7 +22,7 @@ namespace Yms.Services.OrderManagement.Concretes
         public bool Add(Guid userId, Guid productId, byte count)
         {
             
-            var cartItem = table.FirstOrDefault(p => p.ProductId == productId && !p.IsDeleted);
+            var cartItem = table.FirstOrDefault(p => p.ProductId == productId && !p.IsDeleted && p.UserId == userId);
             if (cartItem != null)
             {
                 cartItem.Amount += count;
@@ -45,6 +45,10 @@ namespace Yms.Services.OrderManagement.Concretes
             return context.SaveChanges() > 0;
         }
 
+        public byte GetCartAmount(Guid id)
+        {
+            return (byte)table.Where(p => p.UserId == id && !p.IsDeleted).Count();
+        }
 
         public IEnumerable<CartDto> GetProductByUserId(Guid id)
         {

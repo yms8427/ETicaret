@@ -59,6 +59,12 @@ namespace Yms.Web.Controllers
             return Redirect("/Account/Login");
         }
 
+
+        public async Task<IActionResult> GetCartAmount(Guid id)
+        {
+            var result = await httpHandler.GetCartAmount(id);
+            return Json(result);
+        }
         public IActionResult Index()
         {
             return View();

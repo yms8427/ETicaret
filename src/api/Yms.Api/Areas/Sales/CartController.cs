@@ -28,7 +28,7 @@ namespace Yms.Api.Areas.Sales
 
         [HttpPost("add/{productId}/{count}")]
         public IActionResult Add(Guid productId, byte count)
-        {
+       {
             if (!claims.IsAuthenticated)
             {
                 return Unauthorized();
@@ -62,6 +62,13 @@ namespace Yms.Api.Areas.Sales
         public bool RemoveFromCart(Guid id)
         {
             return service.RemoveFromCart(id);
+        }
+
+        [HttpGet("get-cart-amount/{id}")]
+
+        public byte GetCartAmount(Guid id)
+        {
+            return service.GetCartAmount(id);
         }
     }
 }

@@ -190,5 +190,13 @@ namespace Yms.Web.HttpHandlers
             response.EnsureSuccessStatusCode();
             return JsonConvert.DeserializeObject<DetailedProductDto>(await response.Content.ReadAsStringAsync());
         }
+
+        public async Task<byte> GetCartAmount(Guid id)
+        {
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = await httpClient.GetAsync($"api/sales/cart/get-cart-amount/{id}");
+            
+            return JsonConvert.DeserializeObject<byte>(await response.Content.ReadAsStringAsync());
+        }
     }
 }
