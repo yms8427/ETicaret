@@ -1,25 +1,46 @@
 <template>
   <div>
-    <div class="alert alert-success" v-if="successId != null">
-      <button
-        type="button"
-        class="close"
-        data-dismiss="alert"
-        aria-label="Close"
-        @click="successId = null"
-      >
-        <span aria-hidden="true">&times;</span>
-      </button>
-      <strong>İşlem Başarıyla Gerçekleşti.</strong> <br /><br /><b
-        >Ürün Kodu: </b
-      >{{ successId }}
+    <div class="row">
+      <div class="col-6">
+        <div class="alert alert-success fade-in customHeight" v-if="isAddingSuccess">
+          <button
+            type="button"
+            class="close"
+            data-dismiss="alert"
+            aria-label="Close"
+            @click="isAddingSuccess = false"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <strong>İşlem Başarıyla Gerçekleşti.</strong> <br /><br /><b
+            >Ürün Kodu: </b
+          >{{ successId }}
+        </div>
+      </div>
+      <div class="col-6">
+        <div
+          class="alert alert-success fade-in customHeight"
+          v-if="isUploadingSuccess"
+        >
+          <button
+            type="button"
+            class="close"
+            data-dismiss="alert"
+            aria-label="Close"
+            @click="isUploadingSuccess = false"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <strong>Yükleme Tamamlandı.</strong> <br /><br />
+        </div>
+      </div>
     </div>
     <div class="row">
-      <div class="card col-md-12">
+      <div class="card col-md-6">
         <div class="card-header"><strong>Ürün Ekle</strong></div>
         <div class="card-body">
           <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-12">
               <form
                 class="form-horizontal"
                 action=""
@@ -143,19 +164,10 @@
                 </div>
               </form>
             </div>
-            <div class="col-md-6 border rounded py-3">
-              <div class="form-group row">
-                  <label class="col-md-3 col-form-label" for="SubCatgory"
-                    >Alt Kategori</label>
-                  <div class="col-md-9">
-                    <input type="file" ref="productPhoto" v-on:change="handleFileUpload()"/>
-                  </div>
-                </div>
-                <button class="btn btn-primary" type="submit" @click="upload">Yükle</button>
-            </div>
           </div>
         </div>
-        <div class="card-footer col-md-6">
+
+        <div class="card-footer">
           <button
             class="btn btn-sm btn-primary ml-1 w-25 float-right"
             type="submit"
@@ -169,6 +181,44 @@
             type="reset"
           >
             Temizle
+          </button>
+        </div>
+      </div>
+      <div v-if="successId != null" class="card col-md-6">
+        <div class="card-header"><strong>Ürün Fotoğrafı Yükle</strong></div>
+        <div class="card-body">
+          <div class="row">
+            <form
+              class="form-horizontal"
+              action=""
+              method="post"
+              enctype="multipart/form-data"
+            >
+              <div class="col-md-12">
+                <div class="form-group row">
+                  <div class="col-md-9">
+                    <input
+                      type="file"
+                      ref="productPhoto"
+                      v-on:change="handleFileUpload()"
+                    />
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <button
+            class="btn btn-sm btn-primary ml-1 w-25 float-right"
+            type="submit"
+            @click="upload"
+          >
+            Yükle
+          </button>
+          <button class="btn btn-sm btn-danger w-25 float-right" type="reset">
+            Sil
           </button>
         </div>
       </div>
@@ -195,6 +245,8 @@ export default {
       },
       photo: null,
 
+      isUploadingSuccess: false,
+      isAddingSuccess: false,
       successId: null,
       defaultCategory: false,
     };
@@ -217,6 +269,7 @@ export default {
 
       ajax.post("api/production/home/add-new", data, (data) => {
         this.successId = data;
+        this.isAddingSuccess = true;
       });
     },
     RefreshAll() {
@@ -235,10 +288,10 @@ export default {
       var fd = new FormData();
       fd.append("productId", this.successId);
       fd.append("content", this.photo);
-      ajax.postFile("api/production/home/upload", fd, d => {
-        console.log(d);
-      })
-    }
+      ajax.postFile("api/production/home/upload", fd, (d) => {
+        this.isUploadingSuccess = d;
+      });
+    },
   },
 };
 function LoadCategories(self) {
@@ -257,3 +310,10 @@ function LoadSuppliers(self) {
   });
 }
 </script>
+
+
+<style scoped>
+.customHeight{
+  min-height: 100px !important;
+}
+</style>
