@@ -7,17 +7,26 @@
     },
     methods: {
         GetCartAmount(id) {
-            var self = this;
-            $.ajax({
-                url: `${this.mainUrl}order/getcartamount/${id}`,
-                contentType: "application/json",
-                method: "GET",
-                success: function (data) {
-                    self.cartAmount = data;
-                }
-            });
+            if (window.localStorage.getItem("cartcount") == null) {
+                var self = this;
+                $.ajax({
+                    url: `${this.mainUrl}order/getcartamount/${id}`,
+                    contentType: "application/json",
+                    method: "GET",
+                    success: function (data) {
+                        window.localStorage.setItem("cartcount", data);
+                        self.cartAmount = window.localStorage.getItem("cartcount");
+                        
+                    }
+                });
 
+            }else {
+                    this.cartAmount = window.localStorage.getItem("cartcount");
+            }
             return this.cartAmount;
+
+            
+            
         },
     },
 }

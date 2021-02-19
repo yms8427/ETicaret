@@ -18,6 +18,7 @@
                 success: function (data) {
                     self.products = data.productsOfCart;
                     self.total = data.total;
+                    window.localStorage.setItem("cartcount", data.productsOfCart.length);
                 }
             });
         },
