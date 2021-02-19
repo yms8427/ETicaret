@@ -33,7 +33,7 @@ namespace Yms.Web.Controllers
             var ftpServerUrl = string.Concat("ftp://localhost/img/", filePath);
             var request = (FtpWebRequest)WebRequest.Create(ftpServerUrl);
             request.Method = WebRequestMethods.Ftp.DownloadFile;
-            request.Credentials = new NetworkCredential("SERGEN", "sk05345802402"); //TODO:  burayı anonim hale getirmen lazım
+
             //request.Credentials = new NetworkCredential(user, password);
             using (var response = (FtpWebResponse)request.GetResponse())
             using (var responseStream = response.GetResponseStream())
