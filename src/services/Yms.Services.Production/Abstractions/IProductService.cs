@@ -9,7 +9,7 @@ namespace Yms.Services.Production.Abstractions
     {
         Guid AddNewProduct(NewProductDto data);
         IEnumerable<ProductDto> GetProducts(int count);
-        ProductDto GetProduct(Guid productId);
+        DetailedProductDto GetProduct(Guid productId);
         IEnumerable<ProductDto> GetProductsByCategory(int count, Guid id);
         IEnumerable<ProductDto> GetProductsBySubCategory(int count, Guid id);
         IEnumerable<ProductDto> GetProductsBySupplier(int count, Guid id);

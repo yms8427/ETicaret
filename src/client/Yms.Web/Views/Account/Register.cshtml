@@ -1,4 +1,4 @@
-﻿@model Yms.Web.Models.RegisterViewModel
+﻿@model Yms.Web.Models.RegisterMainViewModel
 @{
     Layout = null;
 }
@@ -23,6 +23,10 @@
                             </div>
                             <p class="login-card-description">Kayıt Ol</p>
                             <form method="post" action="@Url.Action("Register", "Account")">
+                                @if (Model.IsCodeSend)
+                                {
+                                    <div class="alert alert-success">Aktivasyon Kodunuz Mailinize Gönderildi. <br />Lütfen Mailinizi Kontrol Ediniz !</div>
+                                }
                                 <div class="form-group">
                                     <input type="text" class="form-control" placeholder="Adı Soyadı" asp-for="DisplayName" autocomplete="off">
                                 </div>

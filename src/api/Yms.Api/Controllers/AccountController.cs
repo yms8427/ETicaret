@@ -68,10 +68,10 @@ namespace Yms.Api.Controllers
             return service.GetUsers();
         }
 
-        [HttpGet("check/{code}")]
-        public bool CheckCode(string code)
+        [HttpGet("check/{code}/{userId}")]
+        public bool CheckCode(string code, Guid userId)
         {
-            return service.CheckIfCodeExists(code);
+            return service.CheckIfCodeAndUserExists(code, userId);
         }
 
         [HttpPost("set/{password}/{code}")]
@@ -88,7 +88,7 @@ namespace Yms.Api.Controllers
             {
                 var content = new StringBuilder("<html><body>");
                 content.Append("<h1>Hoşgeldiniz. Üyeliğiniz onaylandı.</h1>");
-                content.Append($"<p>Üyeliğinizin aktifleştirilmesi ve parolanızı belirlemek için <a href=\"{hostUrl}/account/verify?code={verificationCode}\">buraya</a> tıklayınız</p>");
+                content.Append($"<p>Üyeliğinizin aktifleştirilmesi ve parolanızı belirlemek için <a href=\"{hostUrl}/account/verify?code={verificationCode}&userId={userId}\">buraya</a> tıklayınız</p>");
                 content.Append("</body></html>");
                 mailService.SendVerificationMail(userId, content.ToString());
                 return Ok(true);

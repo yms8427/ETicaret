@@ -78,9 +78,20 @@ namespace Yms.Services.Production.Concretes
             }).ToList();
         }
 
-        public ProductDto GetProduct(Guid productId)
+        public DetailedProductDto GetProduct(Guid productId)
         {
-            throw new NotImplementedException();
+            var detailedProduct = products.Include(i => i.Document).Include(i => i.SubCategory).Include(s => s.Supplier).Where(p => p.Id == productId).Select(p => new DetailedProductDto
+            {
+                Id = p.Id,
+                Category = p.SubCategory.Name,
+                Name = p.Name,
+                CompanyName = p.Supplier.Name,
+                ImageId = p.DocumentId.HasValue ? p.DocumentId.Value : Guid.Empty,
+                Price = p.Price,
+                Stock = p.Stock
+            }).FirstOrDefault();
+            return detailedProduct;
+
         }
 
         public IEnumerable<ProductDto> GetProductsByCategory(int count, Guid id)
@@ -125,10 +136,10 @@ namespace Yms.Services.Production.Concretes
         public bool SetMainImage(Guid productId, Guid documentId)
         {
             var product = products.FirstOrDefault(f => f.Id == productId);
-            if(product != null)
+            if (product != null)
             {
                 product.DocumentId = documentId;
-                return context.SaveChanges() > 0; 
+                return context.SaveChanges() > 0;
             }
             return false;
         }

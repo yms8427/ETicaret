@@ -41,9 +41,17 @@ namespace Yms.Web.Controllers
             return Json(result);
         }
 
-        public async Task<IActionResult> AddToCart(Guid productId)
+        [HttpPost]
+        public async Task<IActionResult> RemoveFromCart(Guid id)
         {
-            var result = await httpHandler.AddToCart(productId, 1);
+            var result = await httpHandler.RemoveFromCart(id);
+            return Json(result);
+        }
+
+        public async Task<IActionResult> AddToCart(AddToCartModel model)
+        {
+
+            var result = await httpHandler.AddToCart(model.ProductId, model.Count);
             if (result)
             {
                 return Redirect($"/Order/Cart");
@@ -51,6 +59,12 @@ namespace Yms.Web.Controllers
             return Redirect("/Account/Login");
         }
 
+
+        public async Task<IActionResult> GetCartAmount(Guid id)
+        {
+            var result = await httpHandler.GetCartAmount(id);
+            return Json(result);
+        }
         public IActionResult Index()
         {
             return View();

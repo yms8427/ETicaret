@@ -19,4 +19,10 @@ namespace Yms.Web.Models
         [Required]
         public int Type { get; } = 1;
     }
+
+
+    public class RegisterMainViewModel : RegisterViewModel
+    {
+        public bool IsCodeSend { get; set; }
+    }
 }

@@ -1,4 +1,11 @@
-﻿<!DOCTYPE html>
+﻿@{
+    string GetUserId()
+    {
+        return User.Claims.First(i => i.Type == System.Security.Claims.ClaimTypes.NameIdentifier).Value;
+    }
+}
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -22,32 +29,41 @@
 <body>
     <div class="page-holder">
         <!-- navbar-->
-        <header class="header bg-white">
-            <div class="container px-0 px-lg-3">
-                <nav class="navbar navbar-expand-lg navbar-light py-3 px-lg-0">
-                    <a class="navbar-brand" href="index.html"><span class="font-weight-bold text-uppercase text-dark">YM'S</span></a>
-                    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav mr-auto">
-                            <li class="nav-item">
-                                <a class="nav-link" href="@Url.Action("Index", "Home")">Ana Sayfa</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="shop.html">Kampanyalar</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="detail.html">Siparişler</a>
-                            </li>
-                        </ul>
-                        <ul class="navbar-nav ml-auto">
-                            <li class="nav-item"><a class="nav-link" asp-controller="Order" asp-action="Cart"> <i class="fas fa-dolly-flatbed mr-1 text-gray"></i>Sepet<small class="ml-2 text-gray">(2)</small></a></li>
-                            <li class="nav-item"><a class="nav-link" href="#"> <i class="far fa-heart mr-1"></i><small class="text-gray"> (0)</small></a></li>
-                            @{ await Html.RenderPartialAsync("Home/Session"); }
-                        </ul>
-                    </div>
-                </nav>
-            </div>
-        </header>
+        <div id="header">
+            <header class="header bg-white">
+                <div class="container px-0 px-lg-3">
+                    <nav class="navbar navbar-expand-lg navbar-light py-3 px-lg-0">
+                        <a class="navbar-brand" href="index.html"><span class="font-weight-bold text-uppercase text-dark">YM'S</span></a>
+                        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav mr-auto">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="@Url.Action("Index", "Home")">Ana Sayfa</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="shop.html">Kampanyalar</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="detail.html">Siparişler</a>
+                                </li>
+                            </ul>
+                            <ul class="navbar-nav ml-auto">
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <li class="nav-item"><a class="nav-link" asp-controller="Order" asp-action="Cart"> <i class="fas fa-dolly-flatbed mr-1 text-gray"></i>Sepet<small class="ml-2 text-gray">({{GetCartAmount('@GetUserId()')}})</small></a></li>
+                                }
+                                else
+                                {
+                                    <li class="nav-item"><a class="nav-link" asp-controller="Order" asp-action="Cart"> <i class="fas fa-dolly-flatbed mr-1 text-gray"></i>Sepet<small class="ml-2 text-gray">(0)</small></a></li>
+                                }
+                                <li class="nav-item"><a class="nav-link" href="#"> <i class="far fa-heart mr-1"></i><small class="text-gray"> (0)</small></a></li>
+                                @{ await Html.RenderPartialAsync("Home/Session"); }
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+            </header>
+        </div>
         @RenderBody()
         <footer class="bg-dark text-white">
             <div class="container py-4">
@@ -93,6 +109,7 @@
             </div>
         </footer>
         <!-- JavaScript files-->
+
         <script src="~/vendor/vue/vue.global.js"></script>
         <script src="/vendor/jquery/jquery.min.js"></script>
         <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -102,6 +119,7 @@
         <script src="/vendor/owl.carousel2/owl.carousel.min.js"></script>
         <script src="/vendor/owl.carousel2.thumbs/owl.carousel2.thumbs.min.js"></script>
         <script src="/js/front.js"></script>
+        <script src="~/js/pages/layout.js"></script>
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 
         @RenderSection("script", false)

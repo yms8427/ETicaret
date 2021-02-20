@@ -23,10 +23,10 @@ namespace Yms.Web.Controllers
         {
             var tree = await httpHandler.GetCategoryTree();
             var suppliers = await httpHandler.GetSuppliers();
-            var products = await httpHandler.GetProducts(10);//TODO : bunu kullan
+            var products = await httpHandler.GetProducts(15);//TODO : bunu kullan
             var vm = new MainViewModel
             {
-                Products = HomePageProductViewModel.GetDummyProducts().ToList(),
+                Products = HomePageProductViewModel.GetFromDto(products).ToList(),
                 Categories = HomePageCategoryViewModel.FromHierachicalTemplate(tree).ToList(),
                 Suppliers = HomePageSupplierViewModel.GetFromDto(suppliers).ToList(),
                 Title = "ANA SAYFA"
