@@ -46,5 +46,11 @@ namespace Yms.Api.Areas.Production
         {
             return service.AddNewSupplier(data);
         }
+
+        [HttpPost("remove/{id}")]
+        public bool Remove(Guid id)
+        {
+            return service.Remove(id);
+        }
     }
 }

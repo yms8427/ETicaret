@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Yms.Api.Helpers;
 using Yms.Api.Middlewares;
+using Yms.Common.Caching.Extensions;
 using Yms.Common.Contracts;
 using Yms.Data.Context.Extensions;
 using Yms.Services.Common.Extensions;
@@ -55,7 +56,7 @@ namespace Yms.Api
             {
                 c.OperationFilter<AddClientTypeHeaderParameter>();
             });
-            services.AddMemoryCache();
+            services.AddCache();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

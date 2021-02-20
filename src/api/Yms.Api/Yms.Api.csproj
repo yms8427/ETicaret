@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\common\Yms.Common.Caching\Yms.Common.Caching.csproj" />
     <ProjectReference Include="..\..\data\Yms.Data.Context\Yms.Data.Context.csproj" />
     <ProjectReference Include="..\..\services\contracts\Yms.Contracts.Production\Yms.Contracts.Production.csproj" />
     <ProjectReference Include="..\..\services\Yms.Services.Common\Yms.Services.Common.csproj" />
