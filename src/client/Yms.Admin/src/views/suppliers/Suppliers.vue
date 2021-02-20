@@ -13,8 +13,7 @@
         <div class="modal-content">
           <div class="modal-header bg-danger">
             <h5 class="modal-title" id="exampleModalLongTitle">
-              <span style="color: black" class="mr-5">Sağlayıcı Kodu:</span>
-              <span style="color: white">{{ detailedSupplier.id }}</span>
+              <span class="mr-5 text-light">Sağlayıcı Detayı</span>
             </h5>
             <button
               type="button"
@@ -94,6 +93,14 @@
               data-dismiss="modal"
             >
               Kapat
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger"
+              data-dismiss="modal"
+              @click="remove(detailedSupplier.id)"
+            >
+              Sil
             </button>
           </div>
         </div>
@@ -370,6 +377,13 @@ export default {
         window.$("#exampleModalCenter").modal("show");
       });
     },
+    remove(id) {
+      ajax.post(`api/production/supplier/remove/${id}`, null, d => {
+        if (d) {
+          this.LoadSuppliers();
+        }
+      });
+    }
   },
 };
 </script>

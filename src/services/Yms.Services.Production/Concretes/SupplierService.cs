@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Yms.Common.Caching.Abstractions;
 using Yms.Contracts.Production;
 using Yms.Data.Context;
 using Yms.Data.Entities;
@@ -12,12 +13,12 @@ namespace Yms.Services.Production.Concretes
     public class SupplierService : ISupplierService
     {
         private readonly YmsDbContext context;
-        private readonly IMemoryCache memoryCache;
+        private readonly ICacheManager cacheManager;
 
-        public SupplierService(YmsDbContext context, IMemoryCache memoryCache)
+        public SupplierService(YmsDbContext context, ICacheManager cacheManager)
         {
             this.context = context;
-            this.memoryCache = memoryCache;
+            this.cacheManager = cacheManager;
         }
 
         public Guid AddNewSupplier(NewSupplierDto data)
@@ -43,15 +44,30 @@ namespace Yms.Services.Production.Concretes
             var savedItemCount = context.SaveChanges();
             if (savedItemCount > 0)
             {
+                var dto = new SupplierDto
+                {
+                    Id = s.Id,
+                    Address = s.Address,
+                    Mail = s.Mail,
+                    Name = s.Name,
+                    Phone = s.Phone,
+                    TaxNumber = s.TaxNumber,
+                    Vote = s.Vote,
+                    VoteCount = s.VoteCount
+                };
+                cacheManager.Update<List<SupplierDto>>(nameof(Supplier), (cachedData) =>
+                {
+                    cachedData.Add(dto);
+                });
                 return s.Id;
             }
-            //TODO: Add to cache
+
             return Guid.Empty;
         }
 
         public SupplierDto GetSupplier(Guid id)
         {
-            return context.Suppliers.Where(s => s.Id == id).Select(s => new SupplierDto
+            return context.Suppliers.Where(s => s.Id == id && !s.IsDeleted && s.IsActive).Select(s => new SupplierDto
             {
                 Name = s.Name,
                 Id = s.Id,
@@ -71,33 +87,44 @@ namespace Yms.Services.Production.Concretes
 
         public IEnumerable<SupplierDto> GetSuppliers()
         {
-            var hasSuppliers = memoryCache.TryGetValue<List<Supplier>>(nameof(Supplier), out var cachedSuppliers);
-            if (hasSuppliers)
-            {
-                return MapSuppliers(cachedSuppliers);
-            }
-            var suppliers = context.Suppliers.ToList();
-            var options = new MemoryCacheEntryOptions
-            {
-                AbsoluteExpiration = DateTime.Now.AddDays(1)
-            };
-            memoryCache.Set(nameof(Supplier), suppliers, options);
-            return MapSuppliers(suppliers);
+            return cacheManager.GetOrCreate<List<SupplierDto>>(nameof(Supplier), () => FetchSuppliers());
         }
 
-        private static List<SupplierDto> MapSuppliers(List<Supplier> cachedSuppliers)
+        private List<SupplierDto> FetchSuppliers()
         {
-            return cachedSuppliers.OrderByDescending(s => s.Created).Select(s => new SupplierDto
+            return context.Suppliers.Where(f => !f.IsDeleted && f.IsActive)
+                                    .OrderByDescending(s => s.Created)
+                                    .Select(s => new SupplierDto
+                                    {
+                                        Id = s.Id,
+                                        Address = s.Address,
+                                        Mail = s.Mail,
+                                        Name = s.Name,
+                                        Phone = s.Phone,
+                                        TaxNumber = s.TaxNumber,
+                                        Vote = s.Vote,
+                                        VoteCount = s.VoteCount
+                                    }).ToList();
+        }
+
+        public bool Remove(Guid id)
+        {
+            var supplier = context.Suppliers.SingleOrDefault(f => f.Id == id);
+            supplier.IsDeleted = true;
+            var isDeleted = context.SaveChanges() > 0;
+            if (isDeleted)
             {
-                Id = s.Id,
-                Address = s.Address,
-                Mail = s.Mail,
-                Name = s.Name,
-                Phone = s.Phone,
-                TaxNumber = s.TaxNumber,
-                Vote = s.Vote,
-                VoteCount = s.VoteCount
-            }).ToList();
+                cacheManager.Update<List<SupplierDto>>(nameof(Supplier), (cachedData) =>
+                {
+                    var data = cachedData.FirstOrDefault(f => f.Id == id);
+                    if (data != null)
+                    {
+                        cachedData.Remove(data);
+                    }
+                });
+                return true;
+            }
+            return false;
         }
     }
 }

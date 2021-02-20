@@ -6,10 +6,11 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.11" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.11" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.12" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\common\Yms.Common.Caching\Yms.Common.Caching.csproj" />
     <ProjectReference Include="..\..\data\Yms.Data.Context\Yms.Data.Context.csproj" />
     <ProjectReference Include="..\..\data\Yms.Data.Entities\Yms.Data.Entities.csproj" />
     <ProjectReference Include="..\contracts\Yms.Contracts.Production\Yms.Contracts.Production.csproj" />

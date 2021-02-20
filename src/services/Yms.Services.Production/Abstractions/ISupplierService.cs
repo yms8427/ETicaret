@@ -10,5 +10,6 @@ namespace Yms.Services.Production.Abstractions
         string GetSupplierNameById(Guid id);
         Guid AddNewSupplier(NewSupplierDto data);
         SupplierDto GetSupplier(Guid id);
+        bool Remove(Guid id);
     }
 }
