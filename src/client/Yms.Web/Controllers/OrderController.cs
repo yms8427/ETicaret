@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.SignalR.Client;
 using System;
 using System.Threading.Tasks;
 using Yms.Common.Contracts;
@@ -50,10 +52,15 @@ namespace Yms.Web.Controllers
 
         public async Task<IActionResult> AddToCart(AddToCartModel model)
         {
-
             var result = await httpHandler.AddToCart(model.ProductId, model.Count);
             if (result)
             {
+                //TODO: get url from json
+                var connection = new HubConnectionBuilder()
+                                     .WithUrl("https://localhost:7001/nh")
+                                     .Build();
+                await connection.StartAsync();
+                await connection.InvokeAsync("CartInsertion", claims.Session.UserName, model.ProductId);
                 return Redirect($"/Order/Cart");
             }
             return Redirect("/Account/Login");

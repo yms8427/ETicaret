@@ -35,7 +35,7 @@
                 this.updateCart(product);
             }
         },
-        remove(id) {
+        remove(id, productId) {
             var self = this;
             $.ajax({
                 url: `/order/removefromcart/${id}`,
@@ -44,6 +44,8 @@
                 success: function (data) {
                     if (data) {
                         self.loadProductsOfCart(self);
+                        //TODO: kullanıcı adı
+                        connection.invoke("CartDeletion", "can.perk", productId);
                     }
                 }
             });
@@ -58,6 +60,9 @@
                 method: "post",
                 data: JSON.stringify(p)
             });
+        },
+        introduceYourself() {
+            connection.invoke("Introduce", "can");
         }
     }
 }
