@@ -1,9 +1,18 @@
-﻿const LayoutApp = {
+﻿
+const LayoutApp = {
     data() {
         return {
             mainUrl: "https://localhost:6001/",
             cartAmount: 0,
+            message:""
         }
+    },
+    mounted() {
+        var self = this;
+        connection.on("SendCampaignMessage", function (message) {
+            self.message = message;
+            $('#campaign-modal').modal("show");
+        });
     },
     methods: {
         GetCartAmount(id) {
@@ -28,6 +37,9 @@
             
             
         },
+        closeModal() {
+            $('#campaign-modal').modal('hide');
+        }
     },
 }
 

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Threading.Tasks;
 using Yms.Common.Contracts;
@@ -13,11 +14,13 @@ namespace Yms.Web.Controllers
     {
         private readonly IYmsApiHttpHandler httpHandler;
         private readonly IClaims claims;
+        private readonly IConfiguration configuration;
 
-        public OrderController(IYmsApiHttpHandler httpHandler, IClaims claims)
+        public OrderController(IYmsApiHttpHandler httpHandler, IClaims claims, IConfiguration configuration)
         {
             this.httpHandler = httpHandler;
             this.claims = claims;
+            this.configuration = configuration;
         }
 
         public IActionResult Cart()
@@ -55,9 +58,8 @@ namespace Yms.Web.Controllers
             var result = await httpHandler.AddToCart(model.ProductId, model.Count);
             if (result)
             {
-                //TODO: get url from json
                 var connection = new HubConnectionBuilder()
-                                     .WithUrl("https://localhost:7001/nh")
+                                     .WithUrl(configuration.GetValue<string>("WSUrl"))
                                      .Build();
                 await connection.StartAsync();
                 await connection.InvokeAsync("CartInsertion", claims.Session.UserName, model.ProductId);
