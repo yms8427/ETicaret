@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Yms.Common.Caching.Abstractions;
 using Yms.Common.Contracts;
 using Yms.Contracts.Production;
 using Yms.Data.Context;
@@ -14,15 +15,18 @@ namespace Yms.Services.Production.Concretes
     {
         private readonly YmsDbContext context;
         private readonly IClaims claims;
+        private readonly ICacheManager cacheManager;
 
-        public SubCategoryService(YmsDbContext context, IClaims claims)
+        public SubCategoryService(YmsDbContext context, IClaims claims, ICacheManager cacheManager)
         {
             this.context = context;
             this.claims = claims;
+            this.cacheManager = cacheManager;
         }
         public Guid AddNewSubCategory(NewSubCategoryDto data)
         {
-            var hasCategory = context.Categories.Any(f => f.Id == data.CategoryId);
+            var categories = cacheManager.GetOrCreate<List<CategoryDto>>(nameof(Category), () => FetchCategories());
+            var hasCategory = categories.Any(f => f.Id == data.CategoryId);
             if (!hasCategory)
             {
                 throw new InvalidOperationException("Category not found");
@@ -45,14 +49,49 @@ namespace Yms.Services.Production.Concretes
 
             if (resultValue > 0)
             {
+                var dto = new SubCategoryDto
+                {
+                    Id = sc.Id,
+                    ImgUrl = sc.ImageUrl,
+                    Name = sc.Name
+                };
+                cacheManager.Update<List<SubCategoryDto>>(nameof(SubCategory), (cachedData) =>
+                {
+                    cachedData.Add(dto);
+                });
                 return sc.Id;
             }
             return Guid.Empty;
         }
+        private List<CategoryDto> FetchCategories()
+        {
+            return context.Categories.Select(c => new CategoryDto
+            {
+                Id = c.Id,
+                Name = c.Name,
+                Description = c.Description
+            }).ToList();
+        }
+
 
         public IEnumerable<SubCategoryDto> GetSubCategories(Guid categoryId)
         {
+            return cacheManager.GetOrCreate<List<SubCategoryDto>>(categoryId.ToString(), () => FetchSubCategoriesById(categoryId));
+        }
+
+        private List<SubCategoryDto> FetchSubCategoriesById(Guid categoryId)
+        {
             return context.SubCategories.Where(f => f.CategoryId == categoryId).Select(sc => new SubCategoryDto
+            {
+                Id = sc.Id,
+                Name = sc.Name,
+                ImgUrl = sc.ImageUrl
+
+            }).ToList();
+        }
+        private List<SubCategoryDto> FetchSubCategories()
+        {
+            return context.SubCategories.Select(sc => new SubCategoryDto
             {
                 Id = sc.Id,
                 Name = sc.Name,
@@ -63,16 +102,10 @@ namespace Yms.Services.Production.Concretes
 
         public SubCategoryDto GetSubCategory(Guid subCategoryId)
         {
-            var subCategory = context.SubCategories.Where(sc => sc.Id == subCategoryId)
-                                                   .Select(s => new SubCategoryDto
-                                                   {
-                                                       Id = s.Id,
-                                                       ImgUrl = s.ImageUrl,
-                                                       Name = s.Name,
-                                                   }).FirstOrDefault();
-            if (subCategory != null)
+            var subCategories = cacheManager.GetOrCreate<List<SubCategoryDto>>(nameof(SubCategory), () => FetchSubCategories());
+            if (subCategories != null)
             {
-                return subCategory;
+                return subCategories.FirstOrDefault(s=>s.Id == subCategoryId);
             }
             else
             {
