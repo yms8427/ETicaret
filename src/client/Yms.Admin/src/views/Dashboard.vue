@@ -1,8 +1,8 @@
 <template>
   <div>
     <CRow>
-      <CCol>
-        <canvas id="planet-chart"></canvas>
+      <CCol >
+        <div class="m-5"><canvas id="planet-chart"></canvas></div>
       </CCol>
     </CRow>
     <CRow>

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Yms.Common.Caching.Abstractions;
 using Yms.Contracts.Production;
 using Yms.Data.Context;
 using Yms.Data.Entities;
@@ -13,10 +14,12 @@ namespace Yms.Services.Production.Concretes
     internal class CategoryService : ICategoryService
     {
         private readonly YmsDbContext context;
+        private readonly ICacheManager cacheManager;
 
-        public CategoryService(YmsDbContext context)
+        public CategoryService(YmsDbContext context, ICacheManager cacheManager)
         {
             this.context = context;
+            this.cacheManager = cacheManager;
         }
 
         public Guid AddNewCategory(NewCategoryDto data)
@@ -39,6 +42,13 @@ namespace Yms.Services.Production.Concretes
             var resultValue = context.SaveChanges();
             if (resultValue > 0)
             {
+                var dto = new CategoryDto
+                {
+                    Id = c.Id,
+                    Description = c.Description,
+                    Name = c.Name
+                };
+                cacheManager.Update<List<CategoryDto>>(nameof(Category), (cachedData) => { cachedData.Add(dto); });
                 return c.Id;
             }
             return Guid.Empty;
@@ -46,6 +56,13 @@ namespace Yms.Services.Production.Concretes
         }
 
         public IEnumerable<CategoryDto> GetCategories()
+        {
+
+            return cacheManager.GetOrCreate<List<CategoryDto>>(nameof(Category), () => FetchCategories());
+
+        }
+
+        private List<CategoryDto> FetchCategories()
         {
             return context.Categories.Select(c => new CategoryDto
             {
@@ -57,16 +74,10 @@ namespace Yms.Services.Production.Concretes
 
         public CategoryDto GetCategory(Guid categoryId)
         {
-            var category = context.Categories.Where(c => c.Id == categoryId)
-                                             .Select(c => new CategoryDto
-                                             {
-                                                 Id = c.Id,
-                                                 Description = c.Description,
-                                                 Name = c.Name
-                                             }).FirstOrDefault();
-            if (category != null)
+            var categories = cacheManager.GetOrCreate<List<CategoryDto>>(nameof(Category), () => FetchCategories());
+            if (categories != null)
             {
-                return category;
+                return categories.FirstOrDefault(c => c.Id == categoryId);
             }
             else
             {
@@ -76,7 +87,14 @@ namespace Yms.Services.Production.Concretes
 
         public CategoryHierarchyDto GetCategoryHierarchy()
         {
-            var rawData = context.SubCategories.Where(i => !i.IsDeleted)
+            var subCategories = cacheManager.GetOrCreate<List<DetailedSubCategoryDto>>(nameof(DetailedSubCategoryDto), () => FetchDetailedSubCategories());
+
+            return CategoryComposer.Compose(subCategories);
+        }
+
+        private List<DetailedSubCategoryDto> FetchDetailedSubCategories()
+        {
+            return context.SubCategories.Where(i => !i.IsDeleted)
                                                .Include(i => i.Category)
                                                .Select(s => new DetailedSubCategoryDto
                                                {
@@ -87,7 +105,6 @@ namespace Yms.Services.Production.Concretes
                                                    SubCategoryName = s.Name
                                                })
                                                .ToList();
-            return CategoryComposer.Compose(rawData);
         }
 
         public string GetCategoryNameById(Guid id)
@@ -98,12 +115,16 @@ namespace Yms.Services.Production.Concretes
             //    return cat.Name;
             //}
             //return string.Empty;
-            return context.Categories.FirstOrDefault(f => f.Id == id)?.Name;
+            var categories = cacheManager.GetOrCreate<List<CategoryDto>>(nameof(Category), () => FetchCategories());
+
+            return categories.FirstOrDefault(f => f.Id == id)?.Name;
         }
 
         public string GetSubCategoryNameById(Guid id)
         {
-            return context.SubCategories.FirstOrDefault(f => f.Id == id)?.Name;
+            var subCategories = cacheManager.GetOrCreate<List<DetailedSubCategoryDto>>(nameof(DetailedSubCategoryDto), () => FetchDetailedSubCategories());
+
+            return subCategories.FirstOrDefault(f => f.SubCategoryId == id)?.SubCategoryName;
         }
     }
 }

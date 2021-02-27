@@ -88,6 +88,7 @@ namespace Yms.Services.Production.Concretes
         public IEnumerable<SupplierDto> GetSuppliers()
         {
             return cacheManager.GetOrCreate<List<SupplierDto>>(nameof(Supplier), () => FetchSuppliers());
+            
         }
 
         private List<SupplierDto> FetchSuppliers()

@@ -26,6 +26,11 @@ namespace Yms.SignalR
         {
             return Clients.Group("admin").ProductRemovedFromCart(username, productId);
         }
+
+        public Task CampaignMessage(string message)
+        {
+            return Clients.All.SendCampaignMessage(message);
+        }
     }
 
     public interface IYmsHub
@@ -33,5 +38,6 @@ namespace Yms.SignalR
         Task SomeOneIntroducedItself(string message);
         Task ProductAddedToCart(string username, Guid productId);
         Task ProductRemovedFromCart(string username, Guid productId);
+        Task SendCampaignMessage(string message);
     }
 }
