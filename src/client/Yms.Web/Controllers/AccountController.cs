@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Yms.Web.HttpHandlers;
 using Yms.Web.Models;
@@ -14,10 +15,12 @@ namespace Yms.Web.Controllers
     public class AccountController : Controller
     {
         private readonly IYmsApiHttpHandler httpHandler;
+        private readonly IWebHostEnvironment environment;
 
-        public AccountController(IYmsApiHttpHandler httpHandler)
+        public AccountController(IYmsApiHttpHandler httpHandler, IWebHostEnvironment environment)
         {
             this.httpHandler = httpHandler;
+            this.environment = environment;
         }
         public IActionResult Login()
         {
@@ -108,6 +111,11 @@ namespace Yms.Web.Controllers
             }
             var vm = new VerifyViewModel() { CodeExists = true, InvalidPassword = true }; 
             return View("Verify", vm);
+        }
+
+        public IActionResult Environment()
+        {
+            return Json(environment.EnvironmentName);
         }
 
         private void SetAuthenticationError()

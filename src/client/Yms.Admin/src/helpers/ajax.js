@@ -22,7 +22,7 @@ function getHeader(type) {
 
 function createAxios(type) {
   return axios.create({
-    baseURL: "https://localhost:5001",
+    baseURL: process.env.VUE_APP_API_URL,
     headers: getHeader(type),
   });
 }

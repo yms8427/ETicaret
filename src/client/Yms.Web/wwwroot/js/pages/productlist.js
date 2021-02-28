@@ -11,7 +11,7 @@
                 imageId: "",
 
             },
-            mainUrl: "https://localhost:6001/",
+            mainUrl: "/",
             count: 1,
         }
     },

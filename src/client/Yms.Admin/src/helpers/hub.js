@@ -1,7 +1,7 @@
 import { HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
 
 const connection = new HubConnectionBuilder()
-    .withUrl("https://localhost:7001/nh")
+    .withUrl(process.env.VUE_APP_HUB_URL)
     .withAutomaticReconnect()
     .configureLogging(LogLevel.Information)
     .build();

@@ -1,4 +1,6 @@
-﻿@{
+﻿@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+@{
     string GetUserId()
     {
         return User.Claims.First(i => i.Type == System.Security.Claims.ClaimTypes.NameIdentifier).Value;
@@ -128,7 +130,9 @@
             </div>
         </footer>
         <!-- JavaScript files-->
-
+        <script>
+            var yms_hub_url = '@Configuration.GetSection("WSUrl").Value';
+        </script>
         <script src="~/vendor/signalr/signalr.min.js"></script>
         <script src="~/vendor/vue/vue.global.js"></script>
         <script src="/vendor/jquery/jquery.min.js"></script>

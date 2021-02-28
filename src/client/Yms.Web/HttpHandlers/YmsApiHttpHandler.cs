@@ -131,8 +131,11 @@ namespace Yms.Web.HttpHandlers
             var content = JsonConvert.SerializeObject(data);
             var stringContent = new StringContent(content, Encoding.UTF8, "application/json");
             var response = await httpClient.PostAsync($"api/account/register", stringContent);
-            response.EnsureSuccessStatusCode();
-            return JsonConvert.DeserializeObject<bool>(await response.Content.ReadAsStringAsync());
+            if (response.IsSuccessStatusCode)
+            {
+                return JsonConvert.DeserializeObject<bool>(await response.Content.ReadAsStringAsync());
+            }
+            throw new Exception(await response.Content.ReadAsStringAsync());
         }
 
         public async Task<CartMainViewModel> GetProductForCart(Guid userId)

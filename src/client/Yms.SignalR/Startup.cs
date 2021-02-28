@@ -33,6 +33,15 @@ namespace Yms.SignalR
                                                    .AllowCredentials());
                 });
             }
+            else if(Environment.IsProduction())
+            {
+                services.AddCors(options => {
+                    options.AddPolicy("Prod", p => p.WithOrigins("https://www.siberdukkan.com", "https://admin.siberdukkan.com")
+                                                   .AllowAnyHeader()
+                                                   .WithMethods("GET", "POST")
+                                                   .AllowCredentials());
+                });
+            }
             services.AddSignalR();
             services.AddRazorPages();
         }
@@ -46,6 +55,7 @@ namespace Yms.SignalR
             }
             else
             {
+                app.UseCors("Prod");
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }

@@ -44,8 +44,13 @@
                 success: function (data) {
                     if (data) {
                         self.loadProductsOfCart(self);
-                        //TODO: kullanıcı adı
-                        connection.invoke("CartDeletion", "can.perk", productId);
+                        var timer = setInterval(() => {
+                            if (connection.state === "Connected") {
+                                clearInterval(timer);
+                                //TODO: kullanıcı adı
+                                connection.invoke("CartDeletion", "can.perk", productId);
+                            }
+                        }, 100);
                     }
                 }
             });

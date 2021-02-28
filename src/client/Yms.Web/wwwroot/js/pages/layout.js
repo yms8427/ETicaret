@@ -2,7 +2,7 @@
 const LayoutApp = {
     data() {
         return {
-            mainUrl: "https://localhost:6001/",
+            mainUrl: "/",
             cartAmount: 0,
             message:""
         }

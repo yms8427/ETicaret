@@ -1,5 +1,5 @@
 ﻿var connection = new signalR.HubConnectionBuilder()
-    .withUrl("https://localhost:7001/nh")
+    .withUrl(yms_hub_url)
     .withAutomaticReconnect()
     .configureLogging(signalR.LogLevel.Information)
     .build();
