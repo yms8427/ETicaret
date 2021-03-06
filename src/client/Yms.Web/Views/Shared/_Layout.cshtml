@@ -71,11 +71,11 @@
                             <ul class="navbar-nav ml-auto">
                                 @if (User.Identity.IsAuthenticated)
                                 {
-                                    <li class="nav-item"><a class="nav-link" asp-controller="Order" asp-action="Cart"> <i class="fas fa-dolly-flatbed mr-1 text-gray"></i>Sepet<small class="ml-2 text-gray">({{GetCartAmount('@GetUserId()')}})</small></a></li>
+                                    <li class="nav-item"><a id="lnkSepet" class="nav-link" asp-controller="Order" asp-action="Cart"> <i class="fas fa-dolly-flatbed mr-1 text-gray"></i>Sepet<small class="ml-2 text-gray">({{GetCartAmount('@GetUserId()')}})</small></a></li>
                                 }
                                 else
                                 {
-                                    <li class="nav-item"><a class="nav-link" asp-controller="Order" asp-action="Cart"> <i class="fas fa-dolly-flatbed mr-1 text-gray"></i>Sepet<small class="ml-2 text-gray">(0)</small></a></li>
+                                    <li class="nav-item"><a id="lnkSepet" class="nav-link" asp-controller="Order" asp-action="Cart"> <i class="fas fa-dolly-flatbed mr-1 text-gray"></i>Sepet<small class="ml-2 text-gray">(0)</small></a></li>
                                 }
                                 <li class="nav-item"><a class="nav-link" href="#"> <i class="far fa-heart mr-1"></i><small class="text-gray"> (0)</small></a></li>
                                 @{ await Html.RenderPartialAsync("Home/Session"); }

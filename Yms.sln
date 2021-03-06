@@ -49,7 +49,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yms.Contracts.CommonService
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yms.Common.Caching", "src\common\Yms.Common.Caching\Yms.Common.Caching.csproj", "{73B4AF83-5714-4FED-803D-0DD78D09338B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yms.SignalR", "src\client\Yms.SignalR\Yms.SignalR.csproj", "{9D5050B5-22D5-4586-9436-BBBF2C12347A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yms.SignalR", "src\client\Yms.SignalR\Yms.SignalR.csproj", "{9D5050B5-22D5-4586-9436-BBBF2C12347A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yms.UI.Tests", "test\Yms.UI.Tests\Yms.UI.Tests.csproj", "{A551F3DB-2EEA-4C97-8B46-416843D5808B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -109,6 +111,10 @@ Global
 		{9D5050B5-22D5-4586-9436-BBBF2C12347A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9D5050B5-22D5-4586-9436-BBBF2C12347A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9D5050B5-22D5-4586-9436-BBBF2C12347A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A551F3DB-2EEA-4C97-8B46-416843D5808B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A551F3DB-2EEA-4C97-8B46-416843D5808B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A551F3DB-2EEA-4C97-8B46-416843D5808B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A551F3DB-2EEA-4C97-8B46-416843D5808B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -133,6 +139,7 @@ Global
 		{EE420066-6AAF-42C7-B9B5-B0A7A3CD3042} = {EC8F6893-DD2D-49B5-A3EF-A5F082986D86}
 		{73B4AF83-5714-4FED-803D-0DD78D09338B} = {0221B15B-E864-4F3A-8317-0939A30A27C3}
 		{9D5050B5-22D5-4586-9436-BBBF2C12347A} = {139181F3-3499-4510-9EA3-A10ACFA22C16}
+		{A551F3DB-2EEA-4C97-8B46-416843D5808B} = {0E35A2D4-8553-4D7E-8156-55648A045E7A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D8E871ED-10DD-4808-A76A-B8FD18406875}

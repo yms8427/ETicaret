@@ -19,7 +19,7 @@
     <section class="py-5">
         <div class="container p-0">
             <div class="row">
-                <div class="col-lg-3 order-2 order-lg-1">
+                <div id="leftMenu" class="col-lg-3 order-2 order-lg-1">
                     @{ await Html.RenderPartialAsync("Home/Categories", Model.Categories); }
                     @{ await Html.RenderPartialAsync("Home/Suppliers", Model.Suppliers); }
                     @{ await Html.RenderPartialAsync("Home/QuickFilter"); }
