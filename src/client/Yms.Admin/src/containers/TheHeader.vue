@@ -16,17 +16,17 @@
     <CHeaderNav class="d-md-down-none mr-auto">
       <CHeaderNavItem class="px-3">
         <CHeaderNavLink to="/dashboard">
-          Dashboard
+          Ana Sayfa
         </CHeaderNavLink>
       </CHeaderNavItem>
       <CHeaderNavItem class="px-3">
         <CHeaderNavLink to="/users" exact>
-          Users
+          Kullanıcılar
         </CHeaderNavLink>
       </CHeaderNavItem>
       <CHeaderNavItem class="px-3">
         <CHeaderNavLink>
-          Settings
+          Ayarlar
         </CHeaderNavLink>
       </CHeaderNavItem>
     </CHeaderNav>
